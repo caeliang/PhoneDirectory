@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "PhoneDirectory.Core/1.0.0": {
+        "runtime": {
+          "PhoneDirectory.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PhoneDirectory.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

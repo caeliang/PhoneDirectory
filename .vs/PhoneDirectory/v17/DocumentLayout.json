@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|c:\\users\\ranim\\onedrive\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|solutionrelative:phonedirectory.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|c:\\users\\ranim\\onedrive\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.api\\controllers\\kisilercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|solutionrelative:phonedirectory.api\\controllers\\kisilercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "KisilerController.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Controllers\\KisilerController.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.API\\Controllers\\KisilerController.cs",
+              "ToolTip": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Controllers\\KisilerController.cs",
+              "RelativeToolTip": "PhoneDirectory.API\\Controllers\\KisilerController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADwAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-25T21:00:58.212Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Program.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.API\\Program.cs",
+              "ToolTip": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Program.cs",
+              "RelativeToolTip": "PhoneDirectory.API\\Program.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACsAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-25T12:49:37.392Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

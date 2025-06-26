@@ -1,0 +1,17 @@
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\bin\Debug\net8.0\PhoneDirectory.Service.deps.json
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\bin\Debug\net8.0\PhoneDirectory.Service.dll
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\bin\Debug\net8.0\PhoneDirectory.Service.pdb
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\bin\Debug\net8.0\PhoneDirectory.Core.dll
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\bin\Debug\net8.0\PhoneDirectory.Data.dll
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\bin\Debug\net8.0\PhoneDirectory.Core.pdb
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\bin\Debug\net8.0\PhoneDirectory.Data.pdb
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\PhoneDirectory.Service.csproj.AssemblyReference.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\PhoneDirectory.Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\PhoneDirectory.Service.AssemblyInfoInputs.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\PhoneDirectory.Service.AssemblyInfo.cs
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\PhoneDirectory.Service.csproj.CoreCompileInputs.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\PhoneDir.DA45D873.Up2Date
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\PhoneDirectory.Service.dll
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\refint\PhoneDirectory.Service.dll
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\PhoneDirectory.Service.pdb
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Service\obj\Debug\net8.0\ref\PhoneDirectory.Service.dll

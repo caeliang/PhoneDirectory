@@ -1,0 +1,8 @@
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory\obj\Debug\net8.0\PhoneDirectory.csproj.AssemblyReference.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory\obj\Debug\net8.0\PhoneDirectory.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory\obj\Debug\net8.0\PhoneDirectory.AssemblyInfoInputs.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory\obj\Debug\net8.0\PhoneDirectory.AssemblyInfo.cs
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory\obj\Debug\net8.0\PhoneDirectory.csproj.CoreCompileInputs.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory\obj\Debug\net8.0\PhoneDirectory.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory\obj\Debug\net8.0\PhoneDirectory.MvcApplicationPartsAssemblyInfo.cache

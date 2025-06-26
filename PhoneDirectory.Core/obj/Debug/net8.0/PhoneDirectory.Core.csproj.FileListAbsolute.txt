@@ -1,0 +1,11 @@
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\bin\Debug\net8.0\PhoneDirectory.Core.deps.json
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\bin\Debug\net8.0\PhoneDirectory.Core.dll
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\bin\Debug\net8.0\PhoneDirectory.Core.pdb
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\obj\Debug\net8.0\PhoneDirectory.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\obj\Debug\net8.0\PhoneDirectory.Core.AssemblyInfoInputs.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\obj\Debug\net8.0\PhoneDirectory.Core.AssemblyInfo.cs
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\obj\Debug\net8.0\PhoneDirectory.Core.csproj.CoreCompileInputs.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\obj\Debug\net8.0\PhoneDirectory.Core.dll
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\obj\Debug\net8.0\refint\PhoneDirectory.Core.dll
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\obj\Debug\net8.0\PhoneDirectory.Core.pdb
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Core\obj\Debug\net8.0\ref\PhoneDirectory.Core.dll

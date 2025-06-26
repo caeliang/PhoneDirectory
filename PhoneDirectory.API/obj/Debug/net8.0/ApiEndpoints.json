@@ -1,0 +1,107 @@
+[
+  {
+    "ContainingType": "PhoneDirectory.API.Controllers.KisilerController",
+    "Method": "GetAll",
+    "RelativePath": "api/Kisiler",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PhoneDirectory.API.Controllers.KisilerController",
+    "Method": "Create",
+    "RelativePath": "api/Kisiler",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "kisi",
+        "Type": "PhoneDirectory.Core.Entities.Kisi",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PhoneDirectory.API.Controllers.KisilerController",
+    "Method": "GetById",
+    "RelativePath": "api/Kisiler/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PhoneDirectory.API.Controllers.KisilerController",
+    "Method": "Update",
+    "RelativePath": "api/Kisiler/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "kisi",
+        "Type": "PhoneDirectory.Core.Entities.Kisi",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PhoneDirectory.API.Controllers.KisilerController",
+    "Method": "Delete",
+    "RelativePath": "api/Kisiler/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PhoneDirectory.API.Controllers.KisilerController",
+    "Method": "GetPaged",
+    "RelativePath": "api/Kisiler/paged",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "searchTerm",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
