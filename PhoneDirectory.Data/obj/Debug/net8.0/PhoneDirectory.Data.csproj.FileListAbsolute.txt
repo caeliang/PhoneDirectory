@@ -9,6 +9,7 @@ C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Data
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Data\obj\Debug\net8.0\PhoneDirectory.Data.AssemblyInfoInputs.cache
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Data\obj\Debug\net8.0\PhoneDirectory.Data.AssemblyInfo.cs
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Data\obj\Debug\net8.0\PhoneDirectory.Data.csproj.CoreCompileInputs.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Data\obj\Debug\net8.0\PhoneDirectory.Data.sourcelink.json
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Data\obj\Debug\net8.0\PhoneDir.01BEFDB6.Up2Date
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Data\obj\Debug\net8.0\PhoneDirectory.Data.dll
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.Data\obj\Debug\net8.0\refint\PhoneDirectory.Data.dll

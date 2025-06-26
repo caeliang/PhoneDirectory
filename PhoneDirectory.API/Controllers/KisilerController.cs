@@ -32,10 +32,13 @@ namespace PhoneDirectory.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Kisi kisi)
+        public async Task<IActionResult> Create([FromBody] Kisi kisi)
         {
-            var created = await _kisiService.AddAsync(kisi);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _kisiService.AddAsync(kisi);
+            return Ok(kisi);
         }
 
         [HttpPut("{id}")]

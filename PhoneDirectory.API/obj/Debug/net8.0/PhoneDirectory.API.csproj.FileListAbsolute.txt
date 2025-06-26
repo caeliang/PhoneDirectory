@@ -160,6 +160,7 @@ C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\PhoneDirectory.API.csproj.CoreCompileInputs.cache
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\PhoneDirectory.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\PhoneDirectory.API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\PhoneDirectory.API.sourcelink.json
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 C:\Users\ranim\OneDrive\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
