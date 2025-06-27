@@ -1,0 +1,10 @@
+# Visual Studio ve .NET için
+.vs/
+bin/
+obj/
+*.suo
+*.user
+*.vsidx
+*.dll
+*.pdb
+*.exe
