@@ -62,7 +62,17 @@ export class ContactService {
   }
 
   updateContact(contact: Contact): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${contact.id}`, contact).pipe(
+    // Backend'in beklediği format
+    const contactData = { 
+      id: contact.id,
+      ad: contact.name || contact.ad,
+      soyad: contact.soyad || '', 
+      telefon: contact.phone || contact.telefon,
+      email: contact.email
+    };
+    console.log('Güncelleme için gönderilen veri:', contactData);
+    
+    return this.http.put<void>(`${this.apiUrl}/${contact.id}`, contactData, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }

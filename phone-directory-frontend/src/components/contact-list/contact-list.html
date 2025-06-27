@@ -64,7 +64,7 @@
           </div>
         </div>
         <div class="contact-actions">
-          <button class="action-btn edit-btn" title="Düzenle">
+          <button class="action-btn edit-btn" (click)="openEditModal(contact)" title="Düzenle">
             Düzenle
           </button>
           <button class="action-btn delete-btn" (click)="deleteContact(contact.id)" title="Sil">
@@ -72,6 +72,84 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Düzenleme Modal'ı -->
+<div *ngIf="showEditModal" class="modal-overlay" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Kişi Düzenle</h3>
+      <button class="modal-close" (click)="closeEditModal()">&times;</button>
+    </div>
+    
+    <form (ngSubmit)="updateContact()" class="edit-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editAd">Ad</label>
+          <input 
+            type="text" 
+            id="editAd" 
+            [(ngModel)]="editingContact.ad" 
+            name="ad"
+            class="form-input"
+            required
+          >
+        </div>
+        <div class="form-group">
+          <label for="editSoyad">Soyad</label>
+          <input 
+            type="text" 
+            id="editSoyad" 
+            [(ngModel)]="editingContact.soyad" 
+            name="soyad"
+            class="form-input"
+            required
+          >
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="editTelefon">Telefon</label>
+        <input 
+          type="tel" 
+          id="editTelefon" 
+          [(ngModel)]="editingContact.telefon" 
+          name="telefon"
+          class="form-input"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="editEmail">Email</label>
+        <input 
+          type="email" 
+          id="editEmail" 
+          [(ngModel)]="editingContact.email" 
+          name="email"
+          class="form-input"
+          required
+        >
+      </div>
+      
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="closeEditModal()">
+          İptal
+        </button>
+        <button type="submit" class="btn-save" [disabled]="isUpdating">
+          {{ isUpdating ? 'Kaydediliyor...' : 'Kaydet' }}
+        </button>
+      </div>
+    </form>
+    
+    <!-- Success/Error Messages -->
+    <div *ngIf="updateSuccessMessage" class="alert alert-success">
+      {{ updateSuccessMessage }}
+    </div>
+    <div *ngIf="updateErrorMessage" class="alert alert-error">
+      {{ updateErrorMessage }}
     </div>
   </div>
 </div>

@@ -346,10 +346,10 @@ C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\PhoneDir.D58D2E99.Up2Date
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\PhoneDirectory.API.dll
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\refint\PhoneDirectory.API.dll
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\PhoneDirectory.API.pdb
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\PhoneDirectory.API.genruntimeconfig.cache
 C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\ref\PhoneDirectory.API.dll
+C:\Users\ranim\Desktop\StajProjeleri\PhoneDirectory\PhoneDirectory.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
