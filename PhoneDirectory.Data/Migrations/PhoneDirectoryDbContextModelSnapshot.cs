@@ -5,6 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhoneDirectory.Data;
 
+///<summary>
+///Migration, kod ile veritabanı şemasını senkronize tutmak,
+///değişiklikleri yönetmek ve uygulamak için kullanılır.
+///Hem geliştirme sürecini kolaylaştırır hem de veritabanı yönetiminde hata riskini azaltır.
+/// </summary>
+
 #nullable disable
 
 namespace PhoneDirectory.Data.Migrations

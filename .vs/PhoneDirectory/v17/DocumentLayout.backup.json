@@ -1,13 +1,41 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\",
+  "WorkspaceRootPath": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|c:\\users\\ranim\\onedrive\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{74A83F0C-C101-4715-952A-59FAEC168FBD}|PhoneDirectory.Data\\PhoneDirectory.Data.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.data\\repositories\\kisirepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74A83F0C-C101-4715-952A-59FAEC168FBD}|PhoneDirectory.Data\\PhoneDirectory.Data.csproj|solutionrelative:phonedirectory.data\\repositories\\kisirepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{74A83F0C-C101-4715-952A-59FAEC168FBD}|PhoneDirectory.Data\\PhoneDirectory.Data.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.data\\migrations\\phonedirectorydbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74A83F0C-C101-4715-952A-59FAEC168FBD}|PhoneDirectory.Data\\PhoneDirectory.Data.csproj|solutionrelative:phonedirectory.data\\migrations\\phonedirectorydbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{74A83F0C-C101-4715-952A-59FAEC168FBD}|PhoneDirectory.Data\\PhoneDirectory.Data.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.data\\migrations\\20250625075253_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74A83F0C-C101-4715-952A-59FAEC168FBD}|PhoneDirectory.Data\\PhoneDirectory.Data.csproj|solutionrelative:phonedirectory.data\\migrations\\20250625075253_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B6F2FD4-1A83-4D99-A0BE-35F0605FC52C}|PhoneDirectory.Core\\PhoneDirectory.Core.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.core\\entities\\kisi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4B6F2FD4-1A83-4D99-A0BE-35F0605FC52C}|PhoneDirectory.Core\\PhoneDirectory.Core.csproj|solutionrelative:phonedirectory.core\\entities\\kisi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B6F2FD4-1A83-4D99-A0BE-35F0605FC52C}|PhoneDirectory.Core\\PhoneDirectory.Core.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.core\\interfaces\\ikisiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4B6F2FD4-1A83-4D99-A0BE-35F0605FC52C}|PhoneDirectory.Core\\PhoneDirectory.Core.csproj|solutionrelative:phonedirectory.core\\interfaces\\ikisiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B6F2FD4-1A83-4D99-A0BE-35F0605FC52C}|PhoneDirectory.Core\\PhoneDirectory.Core.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.core\\interfaces\\ikisirepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4B6F2FD4-1A83-4D99-A0BE-35F0605FC52C}|PhoneDirectory.Core\\PhoneDirectory.Core.csproj|solutionrelative:phonedirectory.core\\interfaces\\ikisirepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B6F2FD4-1A83-4D99-A0BE-35F0605FC52C}|PhoneDirectory.Core\\PhoneDirectory.Core.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.core\\helpers\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4B6F2FD4-1A83-4D99-A0BE-35F0605FC52C}|PhoneDirectory.Core\\PhoneDirectory.Core.csproj|solutionrelative:phonedirectory.core\\helpers\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|solutionrelative:phonedirectory.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|c:\\users\\ranim\\onedrive\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.api\\controllers\\kisilercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|c:\\users\\ranim\\desktop\\stajprojeleri\\phonedirectory\\phonedirectory.api\\controllers\\kisilercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE90C58C-201A-4F2A-AA5A-0A55FF8A350F}|PhoneDirectory.API\\PhoneDirectory.API.csproj|solutionrelative:phonedirectory.api\\controllers\\kisilercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,32 +46,116 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "PhoneDirectoryDbContextModelSnapshot.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Data\\Migrations\\PhoneDirectoryDbContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.Data\\Migrations\\PhoneDirectoryDbContextModelSnapshot.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Data\\Migrations\\PhoneDirectoryDbContextModelSnapshot.cs",
+              "RelativeToolTip": "PhoneDirectory.Data\\Migrations\\PhoneDirectoryDbContextModelSnapshot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T09:20:55.951Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "20250625075253_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Data\\Migrations\\20250625075253_InitialCreate.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.Data\\Migrations\\20250625075253_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Data\\Migrations\\20250625075253_InitialCreate.cs",
+              "RelativeToolTip": "PhoneDirectory.Data\\Migrations\\20250625075253_InitialCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T09:20:53.672Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IKisiService.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Core\\Interfaces\\IKisiService.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.Core\\Interfaces\\IKisiService.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Core\\Interfaces\\IKisiService.cs",
+              "RelativeToolTip": "PhoneDirectory.Core\\Interfaces\\IKisiService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T09:09:47.297Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IKisiRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Core\\Interfaces\\IKisiRepository.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.Core\\Interfaces\\IKisiRepository.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Core\\Interfaces\\IKisiRepository.cs",
+              "RelativeToolTip": "PhoneDirectory.Core\\Interfaces\\IKisiRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T09:07:18.128Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PagedResult.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Core\\Helpers\\PagedResult.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.Core\\Helpers\\PagedResult.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Core\\Helpers\\PagedResult.cs",
+              "RelativeToolTip": "PhoneDirectory.Core\\Helpers\\PagedResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T09:04:34.601Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "KisiRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Data\\Repositories\\KisiRepository.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.Data\\Repositories\\KisiRepository.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Data\\Repositories\\KisiRepository.cs",
+              "RelativeToolTip": "PhoneDirectory.Data\\Repositories\\KisiRepository.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwA4AAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T07:25:01.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Kisi.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Core\\Entities\\Kisi.cs",
+              "RelativeDocumentMoniker": "PhoneDirectory.Core\\Entities\\Kisi.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.Core\\Entities\\Kisi.cs",
+              "RelativeToolTip": "PhoneDirectory.Core\\Entities\\Kisi.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-26T16:19:49.151Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "KisilerController.cs",
-              "DocumentMoniker": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Controllers\\KisilerController.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Controllers\\KisilerController.cs",
               "RelativeDocumentMoniker": "PhoneDirectory.API\\Controllers\\KisilerController.cs",
-              "ToolTip": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Controllers\\KisilerController.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Controllers\\KisilerController.cs",
               "RelativeToolTip": "PhoneDirectory.API\\Controllers\\KisilerController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADwAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAuwBQAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-25T21:00:58.212Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Program.cs",
               "RelativeDocumentMoniker": "PhoneDirectory.API\\Program.cs",
-              "ToolTip": "C:\\Users\\ranim\\OneDrive\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Program.cs",
+              "ToolTip": "C:\\Users\\ranim\\Desktop\\StajProjeleri\\PhoneDirectory\\PhoneDirectory.API\\Program.cs",
               "RelativeToolTip": "PhoneDirectory.API\\Program.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAABgAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-25T12:49:37.392Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-25T12:49:37.392Z"
             }
           ]
         }

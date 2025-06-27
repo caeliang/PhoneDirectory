@@ -1,21 +1,77 @@
-<h2>Kişi Listesi</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Ad</th>
-      <th>Telefon</th>
-      <th>Email</th>
-      <th>İşlemler</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let contact of contacts">
-      <td>{{ contact.name }}</td>
-      <td>{{ contact.phone }}</td>
-      <td>{{ contact.email }}</td>
-      <td>
-        <button (click)="deleteContact(contact.id)">Sil</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="list-container">
+  <div class="list-header">
+    <h2>Kişi Listesi</h2>
+    <p class="list-subtitle">Kayıtlı kişilerinizi görüntüleyin ve yönetin</p>
+  </div>
+
+  <!-- Yükleniyor durumu -->
+  <div *ngIf="isLoading" class="status-card loading-card">
+    <div class="status-icon">⏳</div>
+    <h3>Kişiler Yükleniyor</h3>
+    <p>Lütfen bekleyin...</p>
+    <div class="loading-bar">
+      <div class="loading-progress"></div>
+    </div>
+  </div>
+
+  <!-- Hata mesajı -->
+  <div *ngIf="errorMessage" class="status-card error-card">
+    <div class="status-icon">!</div>
+    <h3>Bağlantı Hatası</h3>
+    <p>{{ errorMessage }}</p>
+    <button (click)="loadContacts()" class="status-btn retry-btn">
+      Tekrar Dene
+    </button>
+  </div>
+
+  <!-- Boş liste -->
+  <div *ngIf="!isLoading && !errorMessage && contacts.length === 0" class="status-card empty-card">
+    <div class="status-icon">i</div>
+    <h3>Henüz Kişi Yok</h3>
+    <p>İlk kişinizi eklemek için yukarıdaki formu kullanın</p>
+    <button (click)="loadContacts()" class="status-btn refresh-btn">
+      Yenile
+    </button>
+  </div>
+
+  <!-- Kişi listesi -->
+  <div *ngIf="!isLoading && !errorMessage && contacts.length > 0" class="contacts-section">
+    <div class="contacts-header">
+      <div class="contact-count">
+        Toplam <strong>{{ contacts.length }}</strong> kişi bulundu
+      </div>
+      <button (click)="loadContacts()" class="refresh-btn-small" title="Listeyi Yenile">
+        ↻
+      </button>
+    </div>
+    
+    <div class="contacts-grid">
+      <div *ngFor="let contact of contacts; trackBy: trackByContactId" class="contact-card">
+        <div class="contact-avatar">
+          <span class="avatar-text">{{ getInitials(getContactName(contact)) }}</span>
+        </div>
+        <div class="contact-info">
+          <h3 class="contact-name">{{ getContactName(contact) }}</h3>
+          <div class="contact-details">
+            <div class="contact-detail">
+              <span class="detail-label">Tel:</span>
+              <span class="detail-text">{{ getContactPhone(contact) }}</span>
+            </div>
+            <div class="contact-detail">
+              <span class="detail-label">Email:</span>
+              <span class="detail-text">{{ getContactEmail(contact) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-actions">
+          <button class="action-btn edit-btn" title="Düzenle">
+            Düzenle
+          </button>
+          <button class="action-btn delete-btn" (click)="deleteContact(contact.id)" title="Sil">
+            Sil
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,15 +10,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks;
 
+/// <summary>
+/// KisiRepository sınıfı, telefon rehberi uygulamasında kişi (Kisi) verileriyle ilgili veritabanı işlemlerini gerçekleştiren 
+/// bir sınıftır. Bu sınıf, IKisiRepository arayüzünü (interface) uygular ve
+/// arayüzde tanımlanan metotların gerçek (somut) halini içerir. Yani, veritabanı ile doğrudan iletişimi sağlar.
+/// </summary>
+
 namespace PhoneDirectory.Data.Repositories
 {
     public class KisiRepository : IKisiRepository
+    //IkisiRepository arayüzünü uygulayan KisiRepository sınıfı, o sınıfı miras alır.
     {
         private readonly PhoneDirectoryDbContext _context;
+        //PhoneDirectoryDbContext, Entity Framework Core ile veritabanı bağlantısını yöneten DbContext sınıfıdır.
 
         public async Task<PagedResult<Kisi>> GetPagedAndFilteredAsync(int pageNumber, int pageSize, string? searchTerm)
         {
             var query = _context.Kisiler.AsQueryable();
+            // Kisiler tablosundan sorgu oluşturuluyor. AsQueryable, sorgunun IQueryable tipinde olmasını sağlar.
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -27,6 +36,7 @@ namespace PhoneDirectory.Data.Repositories
             }
 
             var totalCount = await query.CountAsync();
+            // Toplam kayıt sayısı asenkron olarak alınıyor.
 
             var items = await query
                 .Skip((pageNumber - 1) * pageSize)
