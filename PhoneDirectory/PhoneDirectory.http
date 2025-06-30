@@ -1,0 +1,6 @@
+@PhoneDirectory_HostAddress = http://localhost:5139
+
+GET {{PhoneDirectory_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
