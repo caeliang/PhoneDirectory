@@ -9,28 +9,35 @@ export class ContactMapper {
    * Backend'den gelen API verisini frontend Contact modeline dönüştürür
    */
   static mapApiContactToContact(apiContact: any): Contact {
-    // Backend favori alanını kontrol et
+    // Backend C# modelinde IsFavori kullanılıyor
+    console.log('🎯 ContactMapper: Backend verisi', apiContact);
+    
     let favoriteValue = false;
-    if (apiContact.hasOwnProperty('favori')) {
-      favoriteValue = Boolean(apiContact.favori);
-    } else if (apiContact.hasOwnProperty('isFavorite')) {
-      favoriteValue = Boolean(apiContact.isFavorite);
-    } else if (apiContact.hasOwnProperty('favorite')) {
-      favoriteValue = Boolean(apiContact.favorite);
+    
+    // Tüm olası favori alan isimlerini kontrol et
+    const favoriteKeys = ['IsFavori', 'isFavori', 'isFavorite', 'favori', 'favorite'];
+    for (const key of favoriteKeys) {
+      if (apiContact.hasOwnProperty(key) && apiContact[key] !== undefined && apiContact[key] !== null) {
+        favoriteValue = Boolean(apiContact[key]);
+        console.log(`🎯 Favori değeri bulundu: ${key} = ${apiContact[key]} → ${favoriteValue}`);
+        break;
+      }
     }
+    
+    console.log('🎯 Final favori değeri:', favoriteValue);
 
     return {
-      id: apiContact.id,
-      firstName: apiContact.ad || '',
-      lastName: apiContact.soyad || '',
-      phoneNumber: apiContact.telefon || '',
-      email: apiContact.email || '',
-      address: apiContact.adres || '',
-      company: apiContact.sirket || '',
-      notes: apiContact.notlar || '',
+      id: apiContact.Id || apiContact.id,
+      firstName: apiContact.Ad || apiContact.ad || '',
+      lastName: apiContact.Soyad || apiContact.soyad || '',
+      phoneNumber: apiContact.Telefon || apiContact.telefon || '',
+      email: apiContact.Email || apiContact.email || '',
+      address: apiContact.Address || apiContact.adres || '',
+      company: apiContact.Company || apiContact.sirket || '',
+      notes: apiContact.Notes || apiContact.notlar || '',
       isFavorite: favoriteValue,
-      createdAt: apiContact.createdAt ? new Date(apiContact.createdAt) : undefined,
-      updatedAt: apiContact.updatedAt ? new Date(apiContact.updatedAt) : undefined
+      createdAt: apiContact.CreatedAt || apiContact.createdAt ? new Date(apiContact.CreatedAt || apiContact.createdAt) : undefined,
+      updatedAt: apiContact.UpdatedAt || apiContact.updatedAt ? new Date(apiContact.UpdatedAt || apiContact.updatedAt) : undefined
     };
   }
 
@@ -39,18 +46,19 @@ export class ContactMapper {
    */
   static mapContactFormDataToApiContact(contact: ContactFormData, id?: number): any {
     const apiContact: any = {
-      ad: contact.firstName,
-      soyad: contact.lastName,
-      telefon: contact.phoneNumber,
-      email: contact.email,
-      adres: contact.address,
-      sirket: contact.company,
-      notlar: contact.notes,
-      favori: contact.isFavorite  // Backend 'favori' alanını bekliyor
+      Ad: contact.firstName,
+      Soyad: contact.lastName,
+      Telefon: contact.phoneNumber,
+      Email: contact.email,
+      Address: contact.address || null,
+      Company: contact.company || null,
+      Notes: contact.notes || null,
+      IsFavori: contact.isFavorite,  // Backend C# modelinde IsFavori
+      UpdatedAt: new Date().toISOString()
     };
 
     if (id !== undefined) {
-      apiContact.id = id;
+      apiContact.Id = id;
     }
 
     return apiContact;
@@ -61,15 +69,16 @@ export class ContactMapper {
    */
   static mapPartialContactFormDataToApiContact(contact: Partial<ContactFormData>, id: number): any {
     return {
-      id: id,
-      ad: contact.firstName,
-      soyad: contact.lastName,
-      telefon: contact.phoneNumber,
-      email: contact.email,
-      adres: contact.address,
-      sirket: contact.company,
-      notlar: contact.notes,
-      favori: contact.isFavorite  // Backend 'favori' alanını bekliyor
+      Id: id,
+      Ad: contact.firstName,
+      Soyad: contact.lastName,
+      Telefon: contact.phoneNumber,
+      Email: contact.email,
+      Address: contact.address || null,
+      Company: contact.company || null,
+      Notes: contact.notes || null,
+      IsFavori: contact.isFavorite,  // Backend C# modelinde IsFavori
+      UpdatedAt: new Date().toISOString()
     };
   }
 

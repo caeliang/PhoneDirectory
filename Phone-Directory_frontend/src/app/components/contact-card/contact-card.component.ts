@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { Contact } from '../../models/contact.model';
 
 @Component({
   selector: 'app-contact-card',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   template: `
     <div class="contact-card" [class.favorite]="contact.isFavorite">
       <div class="contact-header">
@@ -64,7 +63,7 @@ import { Contact } from '../../models/contact.model';
           </a>
           <button 
             class="action-btn edit-btn" 
-            [routerLink]="['/edit-contact', contact.id]"
+            (click)="onEdit()"
             title="Düzenle">
             Düzenle
           </button>
@@ -84,6 +83,7 @@ export class ContactCardComponent {
   @Input() contact!: Contact;
   @Output() toggleFavorite = new EventEmitter<void>();
   @Output() deleteContact = new EventEmitter<void>();
+  @Output() editContact = new EventEmitter<void>();
 
   showDetails = false;
 
@@ -100,6 +100,11 @@ export class ContactCardComponent {
   onToggleFavorite(): void {
     console.log(`Kart favori butonuna tıklandı: ${this.contact.firstName} ${this.contact.lastName} - Mevcut durum: ${this.contact.isFavorite}`);
     this.toggleFavorite.emit();
+  }
+
+  onEdit(): void {
+    console.log(`Kart düzenleme butonuna tıklandı: ${this.contact.firstName} ${this.contact.lastName}`);
+    this.editContact.emit();
   }
 
   onDelete(): void {

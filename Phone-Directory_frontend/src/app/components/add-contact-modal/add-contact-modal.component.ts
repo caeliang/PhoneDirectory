@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ContactFormData } from '../../models/contact.model';
+import { ContactFormData, Contact } from '../../models/contact.model';
 import { FormValidator } from '../../utils';
 
 @Component({
@@ -15,7 +15,7 @@ import { FormValidator } from '../../utils';
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Yeni Kişi Ekle</h5>
+            <h5 class="modal-title">{{ editMode ? 'Kişi Düzenle' : 'Yeni Kişi Ekle' }}</h5>
             <button type="button" class="btn-close" (click)="onClose()"></button>
           </div>
           <div class="modal-body">
@@ -87,14 +87,27 @@ import { FormValidator } from '../../utils';
 })
 export class AddContactModalComponent implements OnChanges {
   @Input() showModal = false;
-  
+  @Input() editMode = false;
+  @Input() editingContact: Contact | null = null;
   @Output() closeModal = new EventEmitter<void>();
   @Output() submitForm = new EventEmitter<ContactFormData>();
 
   formData: ContactFormData = FormValidator.getDefaultFormData();
 
   ngOnChanges(): void {
-    if (this.showModal) {
+    if (this.editMode && this.editingContact) {
+      // Düzenleme modunda mevcut kişi verilerini form'a yükle
+      this.formData = {
+        firstName: this.editingContact.firstName,
+        lastName: this.editingContact.lastName,
+        phoneNumber: this.editingContact.phoneNumber,
+        email: this.editingContact.email || '',
+        address: this.editingContact.address || '',
+        company: this.editingContact.company || '',
+        notes: this.editingContact.notes || '',
+        isFavorite: this.editingContact.isFavorite || false
+      };
+    } else {
       this.resetForm();
     }
   }

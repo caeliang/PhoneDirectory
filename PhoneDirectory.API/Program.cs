@@ -7,7 +7,12 @@ using PhoneDirectory.Data.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null; // PascalCase korunur
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
 
 // Veritabanı bağlantı dizesi (appsettings.json'a da ekleyeceğiz)
 builder.Services.AddDbContext<PhoneDirectoryDbContext>(options =>
@@ -23,12 +28,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
-        builder =>
+        policy =>
         {
-            builder
+            policy
                 .WithOrigins("http://localhost:4200")
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(origin => true) // Development için
+                .AllowCredentials();
         });
 });
     
@@ -40,9 +47,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-app.UseCors("AllowAngularApp");
+// HTTP kullandığımız için HTTPS redirect'i kaldırıyoruz
+// app.UseHttpsRedirection();
 
+app.UseCors("AllowAngularApp");
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

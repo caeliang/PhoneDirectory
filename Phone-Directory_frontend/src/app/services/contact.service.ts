@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, map, catchError, switchMap, of, timeout, throwError } from 'rxjs';
 import { Contact, ContactFormData } from '../models/contact.model';
 import { ContactMapper, ApiResponseHandler } from '../utils';
 
@@ -8,7 +8,7 @@ import { ContactMapper, ApiResponseHandler } from '../utils';
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = 'https://localhost:7227/api/kisiler';
+  private apiUrl = 'http://localhost:5270/api/Kisiler';
 
   constructor(private http: HttpClient) { }
 
@@ -24,8 +24,14 @@ export class ContactService {
         }
 
         const mappedContacts = apiContacts.map(apiContact => {
+          // Backend'ten gelen tüm alanları debug için listele
+          console.log('👀 Ham API verisi (bir kişi):', apiContact);
+          console.log('🔍 IsFavori alanı (büyük I):', apiContact.IsFavori);
+          console.log('🔍 isFavori alanı (küçük i):', apiContact.isFavori);
+          console.log('🔍 Object.keys:', Object.keys(apiContact));
+          
           const mapped = ContactMapper.mapApiContactToContact(apiContact);
-          console.log(`${mapped.firstName} ${mapped.lastName}: Backend favori alanları {favori: ${apiContact.favori}, isFavorite: ${apiContact.isFavorite}, favorite: ${apiContact.favorite}} → Frontend isFavorite=${mapped.isFavorite}`);
+          console.log(`✨ ${mapped.firstName} ${mapped.lastName}: Mapping sonucu isFavorite=${mapped.isFavorite}`);
           return mapped;
         });
 
@@ -92,12 +98,33 @@ export class ContactService {
   toggleFavorite(id: number, isFavorite: boolean): Observable<Contact> {
     console.log(`ID ${id} kişinin favori durumu değiştiriliyor: ${!isFavorite} → ${isFavorite}`);
     
-    // Backend'in beklediği formatta favori durumunu gönder
+    // Backend'in beklediği basit format - sadece favori durumunu gönder
     const favoritePayload = { favori: isFavorite };
     ApiResponseHandler.logApiRequest('Favori değişikliği', favoritePayload);
 
     return this.http.patch<any>(`${this.apiUrl}/${id}`, favoritePayload).pipe(
-      map(apiContact => ApiResponseHandler.processApiResponse(apiContact, 'Favori güncelleme'))
+      timeout(10000), // 10 saniye timeout
+      catchError((error: HttpErrorResponse) => {
+        console.error('❌ PATCH request hatası:', error);
+        if (error.status === 0) {
+          console.error('🔌 Sunucu bağlantısı yok veya CORS hatası');
+        } else if (error.status === 400) {
+          console.error('📝 Veri formatı hatası (400 Bad Request)');
+          console.error('📤 Gönderilen veri:', favoritePayload);
+        } else if (error.status === 404) {
+          console.error('🔍 Kişi bulunamadı (404 Not Found)');
+        }
+        return throwError(() => error);
+      }),
+      map(apiContact => {
+        const mappedContact = ApiResponseHandler.processApiResponse(apiContact, 'Favori güncelleme');
+        console.log(`✅ Favori durumu başarıyla güncellendi: ${mappedContact.firstName} ${mappedContact.lastName} = ${mappedContact.isFavorite}`);
+        return mappedContact;
+      }),
+      catchError((error) => {
+        console.error('❌ toggleFavorite genel hatası:', error);
+        return throwError(() => error);
+      })
     );
   }
 }
