@@ -24,7 +24,14 @@ import { Contact } from '../../models/contact.model';
             [class.active]="contact.isFavorite"
             (click)="onToggleFavorite()"
             title="{{ contact.isFavorite ? 'Favorilerden çıkar' : 'Favorilere ekle' }}">
-            <i class="favorite-icon" [class]="getFavoriteIcon()"></i>
+            <svg class="bookmark-svg" width="16" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M17 3H7C5.9 3 5 3.9 5 5V21L12 18L19 21V5C19 3.9 18.1 3 17 3Z" 
+                    [attr.fill]="contact.isFavorite ? 'currentColor' : 'none'" 
+                    stroke="currentColor" 
+                    stroke-width="2" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round"/>
+            </svg>
           </button>
         </div>
       </div>
@@ -84,10 +91,6 @@ export class ContactCardComponent {
     const f = (firstName && firstName.length > 0) ? firstName.charAt(0) : '';
     const l = (lastName && lastName.length > 0) ? lastName.charAt(0) : '';
     return (f + l).toUpperCase() || '?';
-  }
-
-  getFavoriteIcon(): string {
-    return this.contact.isFavorite ? 'icon-bookmark-filled' : 'icon-bookmark';
   }
 
   toggleDetails(): void {
