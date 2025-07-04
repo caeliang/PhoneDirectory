@@ -44,6 +44,7 @@ import { ContactFilter, ApiResponseHandler, FormValidator } from '../../utils';
           *ngFor="let contact of filteredContacts"
           [contact]="contact"
           (toggleFavorite)="onToggleFavorite(contact)"
+          (editContact)="onEditContact(contact)"
           (deleteContact)="onDeleteContact(contact)">
         </app-contact-card>
       </div>
@@ -51,6 +52,8 @@ import { ContactFilter, ApiResponseHandler, FormValidator } from '../../utils';
 
     <app-add-contact-modal
       [showModal]="showModal"
+      [editMode]="editMode"
+      [editingContact]="editingContact"
       (closeModal)="closeModal()"
       (submitForm)="onSubmitForm($event)">
     </app-add-contact-modal>
@@ -63,6 +66,8 @@ export class ContactListComponent implements OnInit {
   searchTerm = '';
   showModal = false;
   showOnlyFavorites = false;
+  editingContact: Contact | null = null;
+  editMode = false;
 
   constructor(private contactService: ContactService) {}
 
@@ -83,11 +88,22 @@ export class ContactListComponent implements OnInit {
   // 🚀 Main Component Methods - Ana Component Metodları
 
   openAddModal(): void {
+    this.editMode = false;
+    this.editingContact = null;
+    this.showModal = true;
+  }
+
+  onEditContact(contact: Contact): void {
+    console.log(`Düzenleme modalı açılıyor: ${contact.firstName} ${contact.lastName}`);
+    this.editMode = true;
+    this.editingContact = contact;
     this.showModal = true;
   }
 
   closeModal(): void {
     this.showModal = false;
+    this.editMode = false;
+    this.editingContact = null;
   }
 
   onSubmitForm(formData: ContactFormData): void {
@@ -95,15 +111,29 @@ export class ContactListComponent implements OnInit {
       return;
     }
 
-    console.log('Form gönderiliyor:', formData);
-    this.contactService.addContact(formData).subscribe({
-      next: (newContact) => {
-        console.log('Kişi başarıyla eklendi:', newContact);
-        this.loadContacts();
-        this.closeModal();
-      },
-      error: (error) => this.showError('Kişi eklenirken', error)
-    });
+    if (this.editMode && this.editingContact) {
+      // Düzenleme modu
+      console.log('Kişi güncelleniyor:', formData);
+      this.contactService.updateContact(this.editingContact.id!, formData).subscribe({
+        next: (updatedContact) => {
+          console.log('Kişi başarıyla güncellendi:', updatedContact);
+          this.loadContacts();
+          this.closeModal();
+        },
+        error: (error) => this.showError('Kişi güncellenirken', error)
+      });
+    } else {
+      // Ekleme modu
+      console.log('Yeni kişi ekleniyor:', formData);
+      this.contactService.addContact(formData).subscribe({
+        next: (newContact) => {
+          console.log('Kişi başarıyla eklendi:', newContact);
+          this.loadContacts();
+          this.closeModal();
+        },
+        error: (error) => this.showError('Kişi eklenirken', error)
+      });
+    }
   }
 
   loadContacts(): void {

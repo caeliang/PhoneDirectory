@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { Contact } from '../../models/contact.model';
 
 @Component({
   selector: 'app-contact-card',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   template: `
     <div class="contact-card" [class.favorite]="contact.isFavorite">
       <div class="contact-header">
@@ -24,7 +23,14 @@ import { Contact } from '../../models/contact.model';
             [class.active]="contact.isFavorite"
             (click)="onToggleFavorite()"
             title="{{ contact.isFavorite ? 'Favorilerden çıkar' : 'Favorilere ekle' }}">
-            <i class="favorite-icon" [class]="getFavoriteIcon()"></i>
+            <svg class="bookmark-svg" width="16" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M17 3H7C5.9 3 5 3.9 5 5V21L12 18L19 21V5C19 3.9 18.1 3 17 3Z" 
+                    [attr.fill]="contact.isFavorite ? 'currentColor' : 'none'" 
+                    stroke="currentColor" 
+                    stroke-width="2" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round"/>
+            </svg>
           </button>
         </div>
       </div>
@@ -57,7 +63,7 @@ import { Contact } from '../../models/contact.model';
           </a>
           <button 
             class="action-btn edit-btn" 
-            [routerLink]="['/edit-contact', contact.id]"
+            (click)="onEdit()"
             title="Düzenle">
             Düzenle
           </button>
@@ -77,6 +83,7 @@ export class ContactCardComponent {
   @Input() contact!: Contact;
   @Output() toggleFavorite = new EventEmitter<void>();
   @Output() deleteContact = new EventEmitter<void>();
+  @Output() editContact = new EventEmitter<void>();
 
   showDetails = false;
 
@@ -86,10 +93,6 @@ export class ContactCardComponent {
     return (f + l).toUpperCase() || '?';
   }
 
-  getFavoriteIcon(): string {
-    return this.contact.isFavorite ? 'icon-bookmark-filled' : 'icon-bookmark';
-  }
-
   toggleDetails(): void {
     this.showDetails = !this.showDetails;
   }
@@ -97,6 +100,11 @@ export class ContactCardComponent {
   onToggleFavorite(): void {
     console.log(`Kart favori butonuna tıklandı: ${this.contact.firstName} ${this.contact.lastName} - Mevcut durum: ${this.contact.isFavorite}`);
     this.toggleFavorite.emit();
+  }
+
+  onEdit(): void {
+    console.log(`Kart düzenleme butonuna tıklandı: ${this.contact.firstName} ${this.contact.lastName}`);
+    this.editContact.emit();
   }
 
   onDelete(): void {
