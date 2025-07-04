@@ -36,25 +36,76 @@ import { Contact } from '../../models/contact.model';
       </div>
       
       <div class="contact-details" *ngIf="showDetails">
-        <div class="detail-item" *ngIf="contact.email">
-          <span class="detail-icon">E-posta:</span>
-          <span class="detail-text">{{ contact.email }}</span>
+        <div class="details-header">
+          <h4 class="details-title">
+            <svg class="details-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke="currentColor" stroke-width="2"/>
+              <polyline points="13,2 13,9 20,9" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Kişi Detayları
+          </h4>
         </div>
-        <div class="detail-item" *ngIf="contact.address">
-          <span class="detail-icon">Adres:</span>
-          <span class="detail-text">{{ contact.address }}</span>
+        
+        <div class="detail-section">
+          <h5 class="section-title">Temel Bilgiler</h5>
+          <div class="detail-item">
+            <span class="detail-label">Ad Soyad:</span>
+            <span class="detail-text">{{ contact.firstName }} {{ contact.lastName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Telefon:</span>
+            <span class="detail-text">{{ contact.phoneNumber }}</span>
+          </div>
+          <div class="detail-item" *ngIf="contact.email">
+            <span class="detail-label">E-posta:</span>
+            <span class="detail-text">{{ contact.email }}</span>
+          </div>
         </div>
-        <div class="detail-item" *ngIf="contact.notes">
-          <span class="detail-icon">Notlar:</span>
-          <span class="detail-text">{{ contact.notes }}</span>
+
+        <div class="detail-section" *ngIf="contact.address || contact.company">
+          <h5 class="section-title">İletişim Bilgileri</h5>
+          <div class="detail-item" *ngIf="contact.company">
+            <span class="detail-label">Şirket:</span>
+            <span class="detail-text">{{ contact.company }}</span>
+          </div>
+          <div class="detail-item" *ngIf="contact.address">
+            <span class="detail-label">Adres:</span>
+            <span class="detail-text">{{ contact.address }}</span>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="contact.notes || contact.isFavorite">
+          <h5 class="section-title">Ek Bilgiler</h5>
+          <div class="detail-item">
+            <span class="detail-label">Favori Durumu:</span>
+            <span class="detail-text" [class.favorite-status]="contact.isFavorite">
+              {{ contact.isFavorite ? 'Favorilerde' : 'Favorilerde değil' }}
+            </span>
+          </div>
+          <div class="detail-item" *ngIf="contact.notes">
+            <span class="detail-label">Notlar:</span>
+            <span class="detail-text">{{ contact.notes }}</span>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="contact.createdAt || contact.updatedAt">
+          <h5 class="section-title">Zaman Bilgileri</h5>
+          <div class="detail-item" *ngIf="contact.createdAt">
+            <span class="detail-label">Oluşturulma:</span>
+            <span class="detail-text">{{ formatDate(contact.createdAt) }}</span>
+          </div>
+          <div class="detail-item" *ngIf="contact.updatedAt">
+            <span class="detail-label">Son Güncelleme:</span>
+            <span class="detail-text">{{ formatDate(contact.updatedAt) }}</span>
+          </div>
         </div>
       </div>
       
       <div class="contact-footer">
-        <button class="btn btn-sm btn-secondary" (click)="toggleDetails()">
-          {{ showDetails ? 'Gizle' : 'Detaylar' }}
-        </button>
         <div class="footer-actions">
+          <button class="action-btn details-btn" (click)="toggleDetails()">
+            {{ showDetails ? 'Gizle' : 'Detaylar' }}
+          </button>
           <a [href]="'tel:' + contact.phoneNumber" class="action-btn call-btn" title="Ara">
             Ara
           </a>
@@ -95,6 +146,26 @@ export class ContactCardComponent {
 
   toggleDetails(): void {
     this.showDetails = !this.showDetails;
+  }
+
+  formatDate(date: Date | undefined): string {
+    if (!date) return 'Belirtilmemiş';
+    
+    const d = new Date(date);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - d.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return 'Dün';
+    if (diffDays < 7) return `${diffDays} gün önce`;
+    
+    return d.toLocaleDateString('tr-TR', {
+      year: 'numeric',
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   }
 
   onToggleFavorite(): void {
