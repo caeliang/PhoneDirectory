@@ -14,6 +14,8 @@ namespace PhoneDirectory.Data
         public PhoneDirectoryDbContext(DbContextOptions<PhoneDirectoryDbContext> options)
             : base(options) { }
 
+
         public DbSet<Kisi> Kisiler { get; set; }
     }
 }
+

@@ -12,8 +12,8 @@ using PhoneDirectory.Data;
 namespace PhoneDirectory.Data.Migrations
 {
     [DbContext(typeof(PhoneDirectoryDbContext))]
-    [Migration("20250628120029_ExtendKisiForContactModel")]
-    partial class ExtendKisiForContactModel
+    [Migration("20250704152940_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
