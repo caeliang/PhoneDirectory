@@ -8,11 +8,18 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="filter-controls d-flex gap-2">
       <button 
-        class="nav-style-btn filter-btn" 
+        class="action-btn favorite-btn" 
         [class.active]="showOnlyFavorites"
         (click)="onToggleFavorites()"
         title="{{ showOnlyFavorites ? 'Tüm kişileri göster' : 'Sadece favorileri göster' }}">
-        {{ showOnlyFavorites ? 'Favoriler' : 'Favoriler' }}
+        <svg class="bookmark-svg" width="16" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M17 3H7C5.9 3 5 3.9 5 5V21L12 18L19 21V5C19 3.9 18.1 3 17 3Z" 
+                [attr.fill]="showOnlyFavorites ? 'currentColor' : 'none'" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"/>
+        </svg>
       </button>
       <input 
         type="text" 
@@ -21,16 +28,6 @@ import { CommonModule } from '@angular/common';
         [value]="searchTerm"
         (input)="onSearchInput($event)"
         style="max-width: 300px;" />
-    </div>
-
-    <!-- Filtre bilgisi -->
-    <div *ngIf="hasActiveFilters" class="alert alert-info mb-3 mt-3">
-      <div class="d-flex justify-content-between align-items-center">
-        <span>{{ filterInfo }}</span>
-        <button class="nav-style-btn clear-btn" (click)="onClearFilters()">
-          Filtreleri Temizle
-        </button>
-      </div>
     </div>
   `,
   styleUrls: ['./contact-filter.component.scss']

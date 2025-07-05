@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PhoneDirectory.Core.Entities;
 using PhoneDirectory.Core.Interfaces;
+using PhoneDirectory.API.DTOs;
+using AutoMapper;
 using System.Threading.Tasks;
 using System.Text.Json;
 
@@ -11,55 +13,55 @@ namespace PhoneDirectory.API.Controllers
     public class KisilerController : ControllerBase
     {
         private readonly IKisiService _kisiService;
+        private readonly IMapper _mapper;
 
-        public KisilerController(IKisiService kisiService)
+        public KisilerController(IKisiService kisiService, IMapper mapper)
         {
             _kisiService = kisiService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var kisiler = await _kisiService.GetAllAsync();
-            return Ok(kisiler);
+            var kisilerDto = _mapper.Map<List<KisiDto>>(kisiler);
+            return Ok(kisilerDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Kisi kisi)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateKisiDto updateKisiDto)
         {
-            if (id != kisi.Id)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var existingKisi = await _kisiService.GetByIdAsync(id);
             if (existingKisi == null)
                 return NotFound();
 
-            // Tüm alanları güncelle
-            existingKisi.Ad = kisi.Ad;
-            existingKisi.Soyad = kisi.Soyad;
-            existingKisi.Telefon = kisi.Telefon;
-            existingKisi.Email = kisi.Email;
-            existingKisi.Address = kisi.Address;
-            existingKisi.Company = kisi.Company;
-            existingKisi.Notes = kisi.Notes;
-            existingKisi.IsFavori = kisi.IsFavori; // Artık burada güncelleniyor
+            // AutoMapper ile güncelleme
+            _mapper.Map(updateKisiDto, existingKisi);
             existingKisi.UpdatedAt = DateTime.Now;
 
             var result = await _kisiService.UpdateAsync(existingKisi);
             if (!result)
                 return StatusCode(500, "Could not update the record.");
 
-            return NoContent();
+            var updatedKisiDto = _mapper.Map<KisiDto>(existingKisi);
+            return Ok(updatedKisiDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Kisi kisi)
+        public async Task<IActionResult> Create([FromBody] CreateKisiDto createKisiDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _kisiService.AddAsync(kisi);
-            return Ok(kisi);
+            var kisi = _mapper.Map<Kisi>(createKisiDto);
+            var createdKisi = await _kisiService.AddAsync(kisi);
+            var kisiDto = _mapper.Map<KisiDto>(createdKisi);
+            
+            return CreatedAtAction(nameof(GetById), new { id = kisiDto.Id }, kisiDto);
         }
 
         [HttpDelete("{id}")]
@@ -72,12 +74,24 @@ namespace PhoneDirectory.API.Controllers
 
         [HttpGet("paged")]
         public async Task<IActionResult> GetPaged(
-    [FromQuery] int pageNumber = 1,
-    [FromQuery] int pageSize = 10,
-    [FromQuery] string? searchTerm = null)
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? searchTerm = null)
         {
             var result = await _kisiService.GetPagedAndFilteredAsync(pageNumber, pageSize, searchTerm);
-            return Ok(result);
+            
+            // PagedResult içindeki Items'ı DTO'ya çevir
+            var kisilerDto = _mapper.Map<List<KisiDto>>(result.Items);
+            
+            var pagedResultDto = new PagedResultDto<KisiDto>
+            {
+                Items = kisilerDto,
+                TotalCount = result.TotalCount,
+                PageNumber = result.PageNumber,
+                PageSize = result.PageSize
+            };
+            
+            return Ok(pagedResultDto);
         }
 
         [HttpPatch("{id}")]
@@ -103,7 +117,8 @@ namespace PhoneDirectory.API.Controllers
             if (!result)
                 return StatusCode(500, "Could not update the record.");
 
-            return Ok(existingKisi);
+            var kisiDto = _mapper.Map<KisiDto>(existingKisi);
+            return Ok(kisiDto);
         }
 
         [HttpGet("{id}")]
@@ -111,7 +126,9 @@ namespace PhoneDirectory.API.Controllers
         {
             var kisi = await _kisiService.GetByIdAsync(id);
             if (kisi == null) return NotFound();
-            return Ok(kisi);
+            
+            var kisiDto = _mapper.Map<KisiDto>(kisi);
+            return Ok(kisiDto);
         }
     }
 }

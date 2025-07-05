@@ -31,14 +31,32 @@ export class ContactMapper {
       firstName: apiContact.Ad || apiContact.ad || '',
       lastName: apiContact.Soyad || apiContact.soyad || '',
       phoneNumber: apiContact.Telefon || apiContact.telefon || '',
-      email: apiContact.Email || apiContact.email || '',
-      address: apiContact.Address || apiContact.adres || '',
-      company: apiContact.Company || apiContact.sirket || '',
-      notes: apiContact.Notes || apiContact.notlar || '',
+      email: this.cleanStringValue(apiContact.Email || apiContact.email),
+      address: this.cleanStringValue(apiContact.Address || apiContact.adres),
+      company: this.cleanStringValue(apiContact.Company || apiContact.sirket),
+      notes: this.cleanStringValue(apiContact.Notes || apiContact.notlar),
       isFavorite: favoriteValue,
       createdAt: apiContact.CreatedAt || apiContact.createdAt ? new Date(apiContact.CreatedAt || apiContact.createdAt) : undefined,
       updatedAt: apiContact.UpdatedAt || apiContact.updatedAt ? new Date(apiContact.UpdatedAt || apiContact.updatedAt) : undefined
     };
+  }
+
+  /**
+   * String değeri temizler, geçersiz değerleri undefined yapar
+   */
+  private static cleanStringValue(value: string | null | undefined): string | undefined {
+    if (!value) {
+      return undefined;
+    }
+    
+    const normalizedValue = value.toString().trim();
+    const invalidValues = ['null', 'undefined', 'string', 'String', 'NULL', 'UNDEFINED'];
+    
+    if (normalizedValue === '' || invalidValues.includes(normalizedValue)) {
+      return undefined;
+    }
+    
+    return normalizedValue;
   }
 
   /**

@@ -4,21 +4,21 @@ using PhoneDirectory.Core.Interfaces;
 using PhoneDirectory.Core.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading.Tasks;
 
 namespace PhoneDirectory.Data.Repositories
 {
-    public class KisiRepository : IKisiRepository
+    public class KisiRepository : Repository<Kisi>, IKisiRepository
     {
-        private readonly PhoneDirectoryDbContext _context;
+        public KisiRepository(PhoneDirectoryDbContext context) : base(context)
+        {
+        }
 
         public async Task<PagedResult<Kisi>> GetPagedAndFilteredAsync(int pageNumber, int pageSize, string? searchTerm)
         {
-            var query = _context.Kisiler.AsQueryable();
+            var query = _dbSet.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -40,34 +40,6 @@ namespace PhoneDirectory.Data.Repositories
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
-        }
-        public KisiRepository(PhoneDirectoryDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<List<Kisi>> GetAllAsync() => await _context.Kisiler.ToListAsync();
-        public async Task<Kisi?> GetByIdAsync(int id) => await _context.Kisiler.FindAsync(id);
-
-        public async Task<Kisi> AddAsync(Kisi kisi)
-        {
-            await _context.Kisiler.AddAsync(kisi);
-            await _context.SaveChangesAsync();
-            return kisi;
-        }
-
-        public async Task<bool> UpdateAsync(Kisi kisi)
-        {
-            _context.Kisiler.Update(kisi);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var kisi = await _context.Kisiler.FindAsync(id);
-            if (kisi == null) return false;
-            _context.Kisiler.Remove(kisi);
-            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

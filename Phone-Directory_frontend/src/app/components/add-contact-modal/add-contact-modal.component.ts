@@ -9,70 +9,90 @@ import { FormValidator } from '../../utils';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <!-- Kişi Ekleme Modal -->
+    <!-- Kişi Ekleme/Düzenleme Modal -->
     <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" 
          tabindex="-1" *ngIf="showModal">
       <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{ editMode ? 'Kişi Düzenle' : 'Yeni Kişi Ekle' }}</h5>
+        <div class="modal-content contact-details-style">
+          <div class="details-header">
+            <h4 class="details-title">
+              <svg class="details-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="currentColor" stroke-width="2"/>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              {{ editMode ? 'Kişi Düzenle' : 'Yeni Kişi Ekle' }}
+            </h4>
             <button type="button" class="btn-close" (click)="onClose()"></button>
           </div>
+          
           <div class="modal-body">
             <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Ad *</label>
-                  <input type="text" class="form-control" [(ngModel)]="formData.firstName" 
+              <!-- Temel Bilgiler Bölümü -->
+              <div class="detail-section">
+                <h5 class="section-title">Temel Bilgiler</h5>
+                <div class="detail-item form-item">
+                  <label class="detail-label">Ad *</label>
+                  <input type="text" class="form-control detail-input" [(ngModel)]="formData.firstName" 
                          name="firstName" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Soyad *</label>
-                  <input type="text" class="form-control" [(ngModel)]="formData.lastName" 
+                <div class="detail-item form-item">
+                  <label class="detail-label">Soyad *</label>
+                  <input type="text" class="form-control detail-input" [(ngModel)]="formData.lastName" 
                          name="lastName" required>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Telefon *</label>
-                  <input type="tel" class="form-control" [(ngModel)]="formData.phoneNumber" 
+                <div class="detail-item form-item">
+                  <label class="detail-label">Telefon *</label>
+                  <input type="tel" class="form-control detail-input" [(ngModel)]="formData.phoneNumber" 
                          name="phoneNumber" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">E-posta</label>
-                  <input type="email" class="form-control" [(ngModel)]="formData.email" 
+                <div class="detail-item form-item">
+                  <label class="detail-label">E-posta</label>
+                  <input type="email" class="form-control detail-input" [(ngModel)]="formData.email" 
                          name="email">
                 </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Adres</label>
-                <input type="text" class="form-control" [(ngModel)]="formData.address" 
-                       name="address">
+
+              <!-- İletişim Bilgileri Bölümü -->
+              <div class="detail-section">
+                <h5 class="section-title">İletişim Bilgileri</h5>
+                <div class="detail-item form-item">
+                  <label class="detail-label">Şirket</label>
+                  <input type="text" class="form-control detail-input" [(ngModel)]="formData.company" 
+                         name="company">
+                </div>
+                <div class="detail-item form-item">
+                  <label class="detail-label">Adres</label>
+                  <input type="text" class="form-control detail-input" [(ngModel)]="formData.address" 
+                         name="address">
+                </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Şirket</label>
-                <input type="text" class="form-control" [(ngModel)]="formData.company" 
-                       name="company">
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Notlar</label>
-                <textarea class="form-control" [(ngModel)]="formData.notes" 
-                          name="notes" rows="3"></textarea>
-              </div>
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="formData.isFavorite" 
-                       name="isFavorite" id="favoriteCheck">
-                <label class="form-check-label" for="favoriteCheck">
-                  Favorilere ekle
-                </label>
+
+              <!-- Ek Bilgiler Bölümü -->
+              <div class="detail-section">
+                <h5 class="section-title">Ek Bilgiler</h5>
+                <div class="detail-item form-item">
+                  <label class="detail-label">Notlar</label>
+                  <textarea class="form-control detail-input" [(ngModel)]="formData.notes" 
+                            name="notes" rows="3"></textarea>
+                </div>
+                <div class="detail-item form-item checkbox-item">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="formData.isFavorite" 
+                           name="isFavorite" id="favoriteCheck">
+                    <label class="form-check-label detail-label" for="favoriteCheck">
+                      Favorilere ekle
+                    </label>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
+          
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="onClose()">İptal</button>
-            <button type="button" class="btn btn-primary" (click)="onSubmit()" 
+            <button type="button" class="action-btn cancel-btn" (click)="onClose()">İptal</button>
+            <button type="button" class="action-btn save-btn" (click)="onSubmit()" 
                     [disabled]="!isFormValid()">
-              Kaydet
+              {{ editMode ? 'Güncelle' : 'Kaydet' }}
             </button>
           </div>
         </div>
@@ -101,10 +121,10 @@ export class AddContactModalComponent implements OnChanges {
         firstName: this.editingContact.firstName,
         lastName: this.editingContact.lastName,
         phoneNumber: this.editingContact.phoneNumber,
-        email: this.editingContact.email || '',
-        address: this.editingContact.address || '',
-        company: this.editingContact.company || '',
-        notes: this.editingContact.notes || '',
+        email: this.getValidString(this.editingContact.email),
+        address: this.getValidString(this.editingContact.address),
+        company: this.getValidString(this.editingContact.company),
+        notes: this.getValidString(this.editingContact.notes),
         isFavorite: this.editingContact.isFavorite || false
       };
     } else {
@@ -130,5 +150,27 @@ export class AddContactModalComponent implements OnChanges {
 
   isFormValid(): boolean {
     return FormValidator.isFormReady(this.formData);
+  }
+
+  /**
+   * String değeri kontrol eder ve geçerli değil ise boş string döner
+   */
+  private getValidString(value: string | undefined | null): string {
+    // Değer yoksa boş string döner (artık ContactMapper'dan undefined geliyor)
+    if (value === undefined || value === null) {
+      return '';
+    }
+    
+    // String değeri normalize et (trim yap)
+    const normalizedValue = value.toString().trim();
+    
+    // Geçersiz değerleri kontrol et
+    const invalidValues = ['null', 'undefined', 'string', 'String', 'NULL', 'UNDEFINED'];
+    
+    if (normalizedValue === '' || invalidValues.includes(normalizedValue)) {
+      return '';
+    }
+    
+    return normalizedValue;
   }
 }
