@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using PhoneDirectory.Core.Interfaces;
 using PhoneDirectory.API.DTOs;
+using PhoneDirectory.API.Services;
 using AutoMapper;
 using PhoneDirectory.Core.Entities;
 using System.Security.Claims;
@@ -16,9 +17,9 @@ namespace PhoneDirectory.API.Controllers
         private readonly IAuthService _authService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly ILogger<AuthController> _logger;
+        private readonly ILoggingService _logger;
 
-        public AuthController(IAuthService authService, UserManager<ApplicationUser> userManager, IMapper mapper, ILogger<AuthController> logger)
+        public AuthController(IAuthService authService, UserManager<ApplicationUser> userManager, IMapper mapper, ILoggingService logger)
         {
             _authService = authService;
             _userManager = userManager;
@@ -29,11 +30,11 @@ namespace PhoneDirectory.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
-            _logger.LogInformation("Register attempt for username: {Username}, email: {Email}", registerDto.Username, registerDto.Email);
+            await _logger.LogInfoAsync($"Register attempt for username: {registerDto.Username}, email: {registerDto.Email}");
             
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Register failed - Invalid model state for username: {Username}", registerDto.Username);
+                await _logger.LogWarningAsync($"Register failed - Invalid model state for username: {registerDto.Username}");
                 return BadRequest(ModelState);
             }
 
@@ -47,7 +48,7 @@ namespace PhoneDirectory.API.Controllers
 
             if (user == null)
             {
-                _logger.LogWarning("Register failed for username: {Username}, errors: {Errors}", registerDto.Username, string.Join(", ", errors));
+                await _logger.LogWarningAsync($"Register failed for username: {registerDto.Username}, errors: {string.Join(", ", errors)}");
                 return BadRequest(new AuthResponseDto
                 {
                     Success = false,
@@ -55,7 +56,7 @@ namespace PhoneDirectory.API.Controllers
                 });
             }
 
-            _logger.LogInformation("User registered successfully: {Username} (ID: {UserId})", user.UserName, user.Id);
+            await _logger.LogInfoAsync($"User registered successfully: {user.UserName} (ID: {user.Id})");
             return Ok(new AuthResponseDto
             {
                 Success = true,
@@ -66,11 +67,11 @@ namespace PhoneDirectory.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            _logger.LogInformation("Login attempt for username: {Username}", loginDto.Username);
+            await _logger.LogInfoAsync($"Login attempt for username: {loginDto.Username}");
             
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Login failed - Invalid model state for username: {Username}", loginDto.Username);
+                await _logger.LogWarningAsync($"Login failed - Invalid model state for username: {loginDto.Username}");
                 return BadRequest(ModelState);
             }
 
@@ -78,7 +79,7 @@ namespace PhoneDirectory.API.Controllers
 
             if (user == null)
             {
-                _logger.LogWarning("Login failed - Invalid credentials for username: {Username}", loginDto.Username);
+                await _logger.LogWarningAsync($"Login failed - Invalid credentials for username: {loginDto.Username}");
                 return Unauthorized(new AuthResponseDto
                 {
                     Success = false,
@@ -89,7 +90,7 @@ namespace PhoneDirectory.API.Controllers
             var token = await _authService.GenerateJwtTokenAsync(user);
             var userDto = _mapper.Map<UserDto>(user);
 
-            _logger.LogInformation("User logged in successfully: {Username} (ID: {UserId})", user.UserName, user.Id);
+            await _logger.LogInfoAsync($"User logged in successfully: {user.UserName} (ID: {user.Id})");
             return Ok(new AuthResponseDto
             {
                 Success = true,
@@ -101,12 +102,12 @@ namespace PhoneDirectory.API.Controllers
 
         [HttpPost("logout")]
         [Authorize]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var username = User.FindFirst(ClaimTypes.Name)?.Value;
             
-            _logger.LogInformation("User logged out: {Username} (ID: {UserId})", username, userId);
+            await _logger.LogInfoAsync($"User logged out: {username} (ID: {userId})");
             
             // JWT ile logout işlemi client-side'da token'ı silmekle olur
             // Server-side'da token blacklist'i implement edilebilir

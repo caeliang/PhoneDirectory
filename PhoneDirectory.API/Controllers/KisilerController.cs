@@ -2,6 +2,7 @@
 using PhoneDirectory.Core.Entities;
 using PhoneDirectory.Core.Interfaces;
 using PhoneDirectory.API.DTOs;
+using PhoneDirectory.API.Services;
 using AutoMapper;
 using System.Threading.Tasks;
 using System.Text.Json;
@@ -14,9 +15,9 @@ namespace PhoneDirectory.API.Controllers
     {
         private readonly IKisiService _kisiService;
         private readonly IMapper _mapper;
-        private readonly ILogger<KisilerController> _logger;
+        private readonly ILoggingService _logger;
 
-        public KisilerController(IKisiService kisiService, IMapper mapper, ILogger<KisilerController> logger)
+        public KisilerController(IKisiService kisiService, IMapper mapper, ILoggingService logger)
         {
             _kisiService = kisiService;
             _mapper = mapper;
@@ -26,17 +27,17 @@ namespace PhoneDirectory.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            _logger.LogInformation("Fetching all contacts");
+            await _logger.LogInfoAsync("Fetching all contacts");
             try
             {
                 var kisiler = await _kisiService.GetAllAsync();
                 var kisilerDto = _mapper.Map<List<KisiDto>>(kisiler);
-                _logger.LogInformation("Successfully fetched {Count} contacts", kisilerDto.Count);
+                await _logger.LogInfoAsync($"Successfully fetched {kisilerDto.Count} contacts");
                 return Ok(kisilerDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while fetching all contacts");
+                await _logger.LogErrorAsync("Error occurred while fetching all contacts", ex.ToString());
                 return StatusCode(500, "An error occurred while fetching contacts");
             }
         }

@@ -8,20 +8,10 @@ using PhoneDirectory.Service.Services;
 using PhoneDirectory.Data.Repositories;
 using PhoneDirectory.API.Mappings;
 using PhoneDirectory.Core.Entities;
+using PhoneDirectory.API.Services;
 using System.Text;
-using NLog;
-using NLog.Web;
 
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Debug("init main");
-
-try
-{
-    var builder = WebApplication.CreateBuilder(args);
-
-    // Early init of NLog to allow startup and exception logging, before host is built
-    builder.Logging.ClearProviders();
-    builder.Host.UseNLog();
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers()
@@ -86,6 +76,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IKisiRepository, KisiRepository>();
 builder.Services.AddScoped<IKisiService, KisiService>();
 builder.Services.AddScoped<IAuthService, IdentityAuthService>(); // Identity Auth Service
+builder.Services.AddSingleton<ILoggingService, FileLoggingService>(); // File Logging Service
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -120,18 +111,5 @@ if (app.Environment.IsDevelopment())
     app.UseAuthorization();
     app.MapControllers();
     
-    logger.Info("Application started successfully");
     app.Run();
-}
-catch (Exception exception)
-{
-    // NLog: catch setup errors
-    logger.Error(exception, "Stopped program because of exception");
-    throw;
-}
-finally
-{
-    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-    NLog.LogManager.Shutdown();
-}
 

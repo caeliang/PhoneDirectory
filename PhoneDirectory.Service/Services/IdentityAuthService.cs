@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using PhoneDirectory.Core.Entities;
 using PhoneDirectory.Core.Interfaces;
@@ -14,22 +13,17 @@ namespace PhoneDirectory.Service.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<IdentityAuthService> _logger;
 
         public IdentityAuthService(
             UserManager<ApplicationUser> userManager,
-            IConfiguration configuration,
-            ILogger<IdentityAuthService> logger)
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
-            _logger = logger;
         }
 
         public async Task<(ApplicationUser? user, string[] errors)> RegisterAsync(string username, string email, string password, string? firstName = null, string? lastName = null)
         {
-            _logger.LogInformation("Attempting to register user: {Username}, Email: {Email}", username, email);
-            
             var user = new ApplicationUser
             {
                 UserName = username,
@@ -44,35 +38,26 @@ namespace PhoneDirectory.Service.Services
             
             if (result.Succeeded)
             {
-                _logger.LogInformation("User registered successfully: {Username} (ID: {UserId})", user.UserName, user.Id);
                 return (user, Array.Empty<string>());
             }
 
             var errors = result.Errors.Select(e => e.Description).ToArray();
-            _logger.LogWarning("User registration failed for {Username}: {Errors}", username, string.Join(", ", errors));
             return (null, errors);
         }
 
         public async Task<ApplicationUser?> LoginAsync(string username, string password)
         {
-            _logger.LogInformation("Login attempt for user: {Username}", username);
-            
             var user = await _userManager.FindByNameAsync(username);
             if (user == null)
-            {
-                _logger.LogWarning("User not found: {Username}", username);
                 return null;
-            }
 
             var isValidPassword = await _userManager.CheckPasswordAsync(user, password);
             
             if (isValidPassword)
             {
-                _logger.LogInformation("Login successful for user: {Username} (ID: {UserId})", user.UserName, user.Id);
                 return user;
             }
 
-            _logger.LogWarning("Invalid password for user: {Username}", username);
             return null;
         }
 
