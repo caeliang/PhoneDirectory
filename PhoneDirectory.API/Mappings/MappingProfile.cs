@@ -8,10 +8,9 @@ namespace PhoneDirectory.API.Mappings
     {
         public MappingProfile()
         {
-            // Entity to DTO
+            // Kisi Entity to DTO mappings
             CreateMap<Kisi, KisiDto>();
             
-            // DTO to Entity
             CreateMap<CreateKisiDto, Kisi>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.Now))
@@ -22,8 +21,17 @@ namespace PhoneDirectory.API.Mappings
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
             
-            // Reverse mapping için
             CreateMap<KisiDto, Kisi>()
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
+
+            // User Entity to DTO mappings
+            CreateMap<User, UserDto>();
+            
+            CreateMap<RegisterDto, User>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true))
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
         }
     }

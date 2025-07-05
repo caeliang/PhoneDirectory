@@ -16,6 +16,7 @@ namespace PhoneDirectory.Data
 
 
         public DbSet<Kisi> Kisiler { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
 

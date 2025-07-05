@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
+import { AuthService } from '../../services/auth.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -17,12 +19,23 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
             </h1>
           </div>
           <nav class="nav">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
-              Ana Sayfa
-            </a>
-            <a routerLink="/contacts" routerLinkActive="active" class="nav-link">
+            <a routerLink="/contacts" routerLinkActive="active" class="nav-link" *ngIf="isLoggedIn">
               Kişiler
             </a>
+            <div class="auth-buttons" *ngIf="!isLoggedIn">
+              <a routerLink="/login" routerLinkActive="active" class="nav-link login-btn">
+                Giriş
+              </a>
+              <a routerLink="/register" routerLinkActive="active" class="nav-link register-btn">
+                Kayıt Ol
+              </a>
+            </div>
+            <div class="user-menu" *ngIf="isLoggedIn">
+              <span class="user-greeting">Hoş geldin, {{currentUser?.firstName}}!</span>
+              <button class="nav-link logout-btn" (click)="logout()">
+                Çıkış
+              </button>
+            </div>
             <app-theme-toggle></app-theme-toggle>
           </nav>
         </div>
@@ -77,6 +90,24 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
       align-items: center;
     }
 
+    .auth-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .user-menu {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .user-greeting {
+      color: var(--accent-primary);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
     .nav-link {
       display: flex;
       align-items: center;
@@ -91,14 +122,50 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
       border: 1px solid transparent;
       font-family: 'Georgia', 'Times New Roman', serif;
       letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+
+    .login-btn {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .register-btn {
+      background: var(--accent-primary);
+      color: var(--header-bg);
+      border-color: var(--accent-primary);
+    }
+
+    .logout-btn {
+      background: rgba(231, 76, 60, 0.1);
+      border-color: #e74c3c;
+      color: #e74c3c;
     }
 
     .nav-link:hover {
-      color: var(--accent-primary);
-      background: rgba(212, 175, 55, 0.1);
       transform: translateY(-1px);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-link:not(.login-btn):not(.register-btn):not(.logout-btn):hover {
+      color: var(--accent-primary);
+      background: rgba(212, 175, 55, 0.1);
       border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .login-btn:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--accent-secondary);
+    }
+
+    .register-btn:hover {
+      background: var(--accent-secondary);
+    }
+
+    .logout-btn:hover {
+      background: rgba(231, 76, 60, 0.2);
+      border-color: #c0392b;
     }
 
     .nav-link.active {
@@ -149,4 +216,32 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
     }
   `]
 })
-export class HeaderComponent { }
+export class HeaderComponent implements OnInit, OnDestroy {
+  isLoggedIn = false;
+  currentUser: any = null;
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.isLoggedIn = !!user;
+        this.currentUser = user;
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}
