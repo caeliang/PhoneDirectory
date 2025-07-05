@@ -14,19 +14,31 @@ namespace PhoneDirectory.API.Controllers
     {
         private readonly IKisiService _kisiService;
         private readonly IMapper _mapper;
+        private readonly ILogger<KisilerController> _logger;
 
-        public KisilerController(IKisiService kisiService, IMapper mapper)
+        public KisilerController(IKisiService kisiService, IMapper mapper, ILogger<KisilerController> logger)
         {
             _kisiService = kisiService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var kisiler = await _kisiService.GetAllAsync();
-            var kisilerDto = _mapper.Map<List<KisiDto>>(kisiler);
-            return Ok(kisilerDto);
+            _logger.LogInformation("Fetching all contacts");
+            try
+            {
+                var kisiler = await _kisiService.GetAllAsync();
+                var kisilerDto = _mapper.Map<List<KisiDto>>(kisiler);
+                _logger.LogInformation("Successfully fetched {Count} contacts", kisilerDto.Count);
+                return Ok(kisilerDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while fetching all contacts");
+                return StatusCode(500, "An error occurred while fetching contacts");
+            }
         }
 
         [HttpPut("{id}")]

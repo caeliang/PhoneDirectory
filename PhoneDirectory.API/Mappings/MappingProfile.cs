@@ -24,13 +24,14 @@ namespace PhoneDirectory.API.Mappings
             CreateMap<KisiDto, Kisi>()
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
 
-            // User Entity to DTO mappings
-            CreateMap<User, UserDto>();
+            // ApplicationUser Entity to DTO mappings
+            CreateMap<ApplicationUser, UserDto>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true)); // Identity user aktif kabul ediyoruz
             
-            CreateMap<RegisterDto, User>()
+            CreateMap<RegisterDto, ApplicationUser>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Username))
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
         }
