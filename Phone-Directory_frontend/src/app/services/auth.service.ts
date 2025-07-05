@@ -91,7 +91,8 @@ export class AuthService {
     this.isLoggedInSubject.next(true);
   }
 
-  private clearAuthData(): void {
+  // Public method for immediate logout (security purposes)
+  public clearAuthData(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);

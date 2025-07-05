@@ -25,13 +25,13 @@ export class ContactService {
 
         const mappedContacts = apiContacts.map(apiContact => {
           // Backend'ten gelen tüm alanları debug için listele
-          console.log('👀 Ham API verisi (bir kişi):', apiContact);
-          console.log('🔍 IsFavori alanı (büyük I):', apiContact.IsFavori);
-          console.log('🔍 isFavori alanı (küçük i):', apiContact.isFavori);
-          console.log('🔍 Object.keys:', Object.keys(apiContact));
+          console.log('Ham API verisi (bir kişi):', apiContact);
+          console.log('IsFavori alanı (büyük I):', apiContact.IsFavori);
+          console.log('isFavori alanı (küçük i):', apiContact.isFavori);
+          console.log('Object.keys:', Object.keys(apiContact));
           
           const mapped = ContactMapper.mapApiContactToContact(apiContact);
-          console.log(`✨ ${mapped.firstName} ${mapped.lastName}: Mapping sonucu isFavorite=${mapped.isFavorite}`);
+          console.log(`${mapped.firstName} ${mapped.lastName}: Mapping sonucu isFavorite=${mapped.isFavorite}`);
           return mapped;
         });
 
@@ -105,24 +105,24 @@ export class ContactService {
     return this.http.patch<any>(`${this.apiUrl}/${id}`, favoritePayload).pipe(
       timeout(10000), // 10 saniye timeout
       catchError((error: HttpErrorResponse) => {
-        console.error('❌ PATCH request hatası:', error);
+        console.error('PATCH request hatası:', error);
         if (error.status === 0) {
           console.error('🔌 Sunucu bağlantısı yok veya CORS hatası');
         } else if (error.status === 400) {
-          console.error('📝 Veri formatı hatası (400 Bad Request)');
-          console.error('📤 Gönderilen veri:', favoritePayload);
+          console.error('Veri formatı hatası (400 Bad Request)');
+          console.error('Gönderilen veri:', favoritePayload);
         } else if (error.status === 404) {
-          console.error('🔍 Kişi bulunamadı (404 Not Found)');
+          console.error('Kişi bulunamadı (404 Not Found)');
         }
         return throwError(() => error);
       }),
       map(apiContact => {
         const mappedContact = ApiResponseHandler.processApiResponse(apiContact, 'Favori güncelleme');
-        console.log(`✅ Favori durumu başarıyla güncellendi: ${mappedContact.firstName} ${mappedContact.lastName} = ${mappedContact.isFavorite}`);
+        console.log(`Favori durumu başarıyla güncellendi: ${mappedContact.firstName} ${mappedContact.lastName} = ${mappedContact.isFavorite}`);
         return mappedContact;
       }),
       catchError((error) => {
-        console.error('❌ toggleFavorite genel hatası:', error);
+        console.error('toggleFavorite genel hatası:', error);
         return throwError(() => error);
       })
     );

@@ -241,7 +241,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authService.logout();
+    // Güvenlik için önce local verileri temizle
+    this.authService.clearAuthData();
+    
+    // Sonra backend'e logout isteği gönder (başarısız olsa bile kullanıcı zaten çıkış yapmış olacak)
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('Logout successful');
+      },
+      error: (error) => {
+        console.error('Logout error (but user is already logged out locally):', error);
+      }
+    });
+    
     this.router.navigate(['/login']);
   }
 

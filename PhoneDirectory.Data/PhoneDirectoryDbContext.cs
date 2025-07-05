@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using PhoneDirectory.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,19 @@ using System.Threading.Tasks;
 
 namespace PhoneDirectory.Data
 {
-    // ESKİ: class PhoneDirectoryDbContext
-    public class PhoneDirectoryDbContext : DbContext
+    public class PhoneDirectoryDbContext : IdentityDbContext<ApplicationUser>
     {
         public PhoneDirectoryDbContext(DbContextOptions<PhoneDirectoryDbContext> options)
             : base(options) { }
 
-
         public DbSet<Kisi> Kisiler { get; set; }
-        public DbSet<User> Users { get; set; }
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            
+            // Identity tabloları için özel konfigürasyonlar buraya eklenebilir
+        }
     }
 }
 
