@@ -3,6 +3,7 @@ using PhoneDirectory.Data;
 using PhoneDirectory.Core.Interfaces;
 using PhoneDirectory.Service.Services;
 using PhoneDirectory.Data.Repositories;
+using PhoneDirectory.API.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,11 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<PhoneDirectoryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 // DI Bağlantıları
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IKisiRepository, KisiRepository>();
 builder.Services.AddScoped<IKisiService, KisiService>();
 

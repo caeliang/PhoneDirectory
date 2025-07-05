@@ -153,11 +153,17 @@ export class ContactCardComponent {
     
     const d = new Date(date);
     const now = new Date();
-    const diffTime = Math.abs(now.getTime() - d.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
+    // Tarih farkını hesapla (sadece gün bazında, saat önemsiz)
+    const dateOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diffTime = nowOnly.getTime() - dateOnly.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Bugün';
     if (diffDays === 1) return 'Dün';
-    if (diffDays < 7) return `${diffDays} gün önce`;
+    if (diffDays > 1 && diffDays < 7) return `${diffDays} gün önce`;
+    if (diffDays < 0) return 'Gelecek'; // Gelecek tarih (sistem saati hatası durumu)
     
     return d.toLocaleDateString('tr-TR', {
       year: 'numeric',

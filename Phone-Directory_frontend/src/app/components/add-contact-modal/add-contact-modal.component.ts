@@ -121,10 +121,10 @@ export class AddContactModalComponent implements OnChanges {
         firstName: this.editingContact.firstName,
         lastName: this.editingContact.lastName,
         phoneNumber: this.editingContact.phoneNumber,
-        email: this.editingContact.email || '',
-        address: this.editingContact.address || '',
-        company: this.editingContact.company || '',
-        notes: this.editingContact.notes || '',
+        email: this.getValidString(this.editingContact.email),
+        address: this.getValidString(this.editingContact.address),
+        company: this.getValidString(this.editingContact.company),
+        notes: this.getValidString(this.editingContact.notes),
         isFavorite: this.editingContact.isFavorite || false
       };
     } else {
@@ -150,5 +150,27 @@ export class AddContactModalComponent implements OnChanges {
 
   isFormValid(): boolean {
     return FormValidator.isFormReady(this.formData);
+  }
+
+  /**
+   * String değeri kontrol eder ve geçerli değil ise boş string döner
+   */
+  private getValidString(value: string | undefined | null): string {
+    // Değer yoksa boş string döner (artık ContactMapper'dan undefined geliyor)
+    if (value === undefined || value === null) {
+      return '';
+    }
+    
+    // String değeri normalize et (trim yap)
+    const normalizedValue = value.toString().trim();
+    
+    // Geçersiz değerleri kontrol et
+    const invalidValues = ['null', 'undefined', 'string', 'String', 'NULL', 'UNDEFINED'];
+    
+    if (normalizedValue === '' || invalidValues.includes(normalizedValue)) {
+      return '';
+    }
+    
+    return normalizedValue;
   }
 }
