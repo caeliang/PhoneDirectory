@@ -67,14 +67,8 @@ export class AuthService {
   }
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData, this.httpOptions)
-      .pipe(
-        tap(response => {
-          if (response.success && response.token && response.user) {
-            this.setAuthData(response.token, response.user);
-          }
-        })
-      );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData, this.httpOptions);
+    // Kayıt işleminde otomatik giriş yapmıyoruz
   }
 
   logout(): Observable<AuthResponse> {

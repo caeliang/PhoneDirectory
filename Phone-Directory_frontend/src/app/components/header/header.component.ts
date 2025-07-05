@@ -31,7 +31,7 @@ import { Subject, takeUntil } from 'rxjs';
               </a>
             </div>
             <div class="user-menu" *ngIf="isLoggedIn">
-              <span class="user-greeting">Hoş geldin, {{currentUser?.firstName}}!</span>
+              <span class="user-greeting">{{getTimeBasedGreeting()}}, {{currentUser?.username}}!</span>
               <button class="nav-link logout-btn" (click)="logout()">
                 Çıkış
               </button>
@@ -243,5 +243,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  getTimeBasedGreeting(): string {
+    const currentHour = new Date().getHours();
+    
+    if (currentHour >= 6 && currentHour < 12) {
+      return 'Günaydın';
+    } else if (currentHour >= 12 && currentHour < 17) {
+      return 'İyi günler';
+    } else if (currentHour >= 17 && currentHour < 21) {
+      return 'İyi akşamlar';
+    } else {
+      return 'İyi geceler';
+    }
   }
 }

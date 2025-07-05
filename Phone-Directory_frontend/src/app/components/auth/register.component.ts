@@ -120,18 +120,24 @@ import { AuthService, RegisterRequest } from '../../services/auth.service';
             {{ errorMessage }}
           </div>
 
+          <div class="success-message" *ngIf="successMessage">
+            {{ successMessage }}
+          </div>
+
           <button 
             type="submit" 
             class="btn btn-primary"
-            [disabled]="isLoading"
+            [disabled]="isLoading || successMessage"
           >
             <span *ngIf="isLoading">Kayıt yapılıyor...</span>
-            <span *ngIf="!isLoading">Kayıt Ol</span>
+            <span *ngIf="!isLoading && !successMessage">Kayıt Ol</span>
+            <span *ngIf="successMessage">Kayıt Tamamlandı</span>
           </button>
         </form>
 
         <div class="auth-footer">
-          <p>Zaten hesabınız var mı? <a (click)="goToLogin()" class="link">Giriş yap</a></p>
+          <p *ngIf="!successMessage">Zaten hesabınız var mı? <a (click)="goToLogin()" class="link">Giriş yap</a></p>
+          <p *ngIf="successMessage"><a (click)="goToLogin()" class="link">Giriş sayfasına git</a></p>
         </div>
       </div>
     </div>
@@ -222,6 +228,17 @@ import { AuthService, RegisterRequest } from '../../services/auth.service';
       margin-top: 0.25rem;
     }
 
+    .success-message {
+      color: var(--success-color);
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid var(--success-color);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
     .btn {
       padding: 0.75rem 1.5rem;
       border: none;
@@ -284,6 +301,7 @@ export class RegisterComponent {
   
   isLoading = false;
   errorMessage = '';
+  successMessage = '';
 
   constructor(
     private authService: AuthService,
@@ -297,6 +315,7 @@ export class RegisterComponent {
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.successMessage = '';
 
     console.log('Gönderilen veri:', this.userData);
 
@@ -305,7 +324,9 @@ export class RegisterComponent {
         console.log('Başarılı yanıt:', response);
         this.isLoading = false;
         if (response.success) {
-          this.router.navigate(['/contacts']);
+          // Kayıt başarılı mesajı göster
+          this.successMessage = 'Kayıt başarılı! Artık giriş yapabilirsiniz.';
+          this.errorMessage = '';
         } else {
           this.errorMessage = response.message;
         }

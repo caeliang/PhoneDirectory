@@ -41,15 +41,10 @@ namespace PhoneDirectory.API.Controllers
                     Message = "Kullanıcı adı veya email zaten kullanımda."
                 });
 
-            var token = await _authService.GenerateJwtTokenAsync(user);
-            var userDto = _mapper.Map<UserDto>(user);
-
             return Ok(new AuthResponseDto
             {
                 Success = true,
-                Message = "Kayıt başarılı.",
-                Token = token,
-                User = userDto
+                Message = "Kayıt başarılı. Giriş sayfasına yönlendiriliyorsunuz."
             });
         }
 

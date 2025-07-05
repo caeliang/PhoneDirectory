@@ -17,6 +17,8 @@
   --nav-text: #ecf0f1;
   --button-hover-bg: rgba(212, 175, 55, 0.1);
   --icon-filter: brightness(0.8);
+  --success-color: #27ae60;
+  --error-color: #e74c3c;
 }
 
 [data-theme="dark"] {
@@ -37,6 +39,8 @@
   --nav-text: #ecf0f1;
   --button-hover-bg: rgba(241, 196, 15, 0.1);
   --icon-filter: brightness(1.2);
+  --success-color: #2ecc71;
+  --error-color: #e74c3c;
 }
 
 /* Global Styles */
