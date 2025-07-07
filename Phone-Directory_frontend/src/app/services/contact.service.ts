@@ -1,8 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, map, catchError, switchMap, of, timeout, throwError } from 'rxjs';
 import { Contact, ContactFormData } from '../models/contact.model';
 import { ContactMapper, ApiResponseHandler } from '../utils';
+
+// Add PagedResult interface
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages?: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -90,6 +99,50 @@ export class ContactService {
       }),
       catchError((error) => {
         console.error('toggleFavorite genel hatası:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // New paginated method
+  getPagedContacts(pageNumber: number = 1, pageSize: number = 20, searchTerm?: string): Observable<PagedResult<Contact>> {
+    let params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+    
+    if (searchTerm && searchTerm.trim()) {
+      params = params.set('searchTerm', searchTerm.trim());
+    }
+
+    return this.http.get<any>(`${this.apiUrl}/paged`, { params }).pipe(
+      map(response => {
+        console.log('Server response:', response);
+        
+        if (!response || !Array.isArray(response.items)) {
+          console.error('Backend düzgün PagedResult döndürmedi:', response);
+          return {
+            items: [],
+            totalCount: 0,
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+            totalPages: 0
+          };
+        }
+
+        const mappedContacts = response.items.map((apiContact: any) => {
+          return ContactMapper.mapApiContactToContact(apiContact);
+        });
+
+        return {
+          items: mappedContacts,
+          totalCount: response.totalCount || 0,
+          pageNumber: response.pageNumber || pageNumber,
+          pageSize: response.pageSize || pageSize,
+          totalPages: Math.ceil((response.totalCount || 0) / pageSize)
+        };
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Paginated contacts fetch error:', error);
         return throwError(() => error);
       })
     );

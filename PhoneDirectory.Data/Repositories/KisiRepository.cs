@@ -76,6 +76,25 @@ namespace PhoneDirectory.Data.Repositories
                 PageSize = pageSize
             };
         }
+
+        private string NormalizePhoneNumber(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone)) return string.Empty;
+            // Remove spaces, dashes, parentheses, and leading +90 or 0
+            var normalized = new string(phone.Where(char.IsDigit).ToArray());
+            if (normalized.StartsWith("90"))
+                normalized = normalized.Substring(2);
+            else if (normalized.StartsWith("0"))
+                normalized = normalized.Substring(1);
+            return normalized;
+        }
+
+        public async Task<bool> PhoneNumberExistsAsync(string userId, string phoneNumber)
+        {
+            var normalizedPhone = NormalizePhoneNumber(phoneNumber);
+            var userPhones = await _dbSet.Where(k => k.UserId == userId).Select(k => k.Telefon).ToListAsync();
+            return userPhones.Any(tel => NormalizePhoneNumber(tel) == normalizedPhone);
+        }
     }
 }
 

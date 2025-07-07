@@ -14,14 +14,14 @@
   }
 
   &.favorite {
-    border: 2px solid var(--accent-primary);
+    border: 1px solid var(--accent-primary);
     position: relative;
     
     &::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
+      height: 1px;
       background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
     }
   }

@@ -110,6 +110,14 @@ namespace PhoneDirectory.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            // Duplicate phone number check
+            var phoneExists = await _kisiService.PhoneNumberExistsAsync(userId, createKisiDto.Telefon);
+            if (phoneExists)
+            {
+                await _logger.LogWarningAsync($"Duplicate phone number attempt for user: {userId}, phone: {createKisiDto.Telefon}");
+                return Conflict(new { message = "Bu telefon numarasına sahip bir kişi zaten mevcut." });
+            }
+
             await _logger.LogInfoAsync($"Creating contact for user: {userId}");
             try
             {
@@ -117,9 +125,18 @@ namespace PhoneDirectory.API.Controllers
                 kisi.UserId = userId; // Kullanıcı ID'sini atayalım
                 var createdKisi = await _kisiService.AddAsync(kisi);
                 var kisiDto = _mapper.Map<KisiDto>(createdKisi);
-                
                 await _logger.LogInfoAsync($"Successfully created contact with ID: {kisiDto.Id} for user: {userId}");
                 return CreatedAtAction(nameof(GetById), new { id = kisiDto.Id }, kisiDto);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                if (dbEx.InnerException != null && dbEx.InnerException.Message.Contains("IX_Kisiler_UserId_Telefon"))
+                {
+                    await _logger.LogWarningAsync($"DB duplicate index violation for user: {userId}, phone: {createKisiDto.Telefon}");
+                    return Conflict(new { message = "Bu telefon numarasına sahip bir kişi zaten mevcut (veritabanı)." });
+                }
+                await _logger.LogErrorAsync($"DB error while creating contact for user: {userId}", dbEx.ToString());
+                return StatusCode(500, "Veritabanı hatası oluştu.");
             }
             catch (Exception ex)
             {

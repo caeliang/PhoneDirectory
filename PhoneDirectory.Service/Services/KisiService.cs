@@ -76,5 +76,9 @@ namespace PhoneDirectory.Service.Services
             return await _kisiRepository.GetPagedAndFilteredByUserIdAsync(pageNumber, pageSize, searchTerm, userId);
         }
 
+        public async Task<bool> PhoneNumberExistsAsync(string userId, string phoneNumber)
+        {
+            return await _kisiRepository.PhoneNumberExistsAsync(userId, phoneNumber);
+        }
     }
 }

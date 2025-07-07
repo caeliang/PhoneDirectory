@@ -22,6 +22,7 @@ namespace PhoneDirectory.Core.Interfaces
         Task<Kisi?> GetByIdAndUserIdAsync(int id, string userId);
         Task<bool> DeleteByIdAndUserIdAsync(int id, string userId);
         Task<PagedResult<Kisi>> GetPagedAndFilteredByUserIdAsync(int pageNumber, int pageSize, string? searchTerm, string userId);
+        Task<bool> PhoneNumberExistsAsync(string userId, string phoneNumber);
     }
 }
 

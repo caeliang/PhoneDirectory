@@ -19,9 +19,6 @@ import { Subject, takeUntil } from 'rxjs';
             </h1>
           </div>
           <nav class="nav">
-            <a routerLink="/contacts" routerLinkActive="active" class="nav-link" *ngIf="isLoggedIn">
-              Kişiler
-            </a>
             <div class="auth-buttons" *ngIf="!isLoggedIn">
               <a routerLink="/login" routerLinkActive="active" class="nav-link login-btn">
                 Giriş

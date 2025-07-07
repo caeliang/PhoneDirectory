@@ -13,34 +13,65 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   imports: [CommonModule, AgGridAngular],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="ag-theme-quartz" style="height: 600px; width: 100%;">
-      <div *ngIf="contacts && contacts.length > 0; else noData" style="height: 100%;">
+    <div style="width: 100%;">
+      <div class="ag-theme-quartz" [style.height]="'calc(600px - ' + (Math.ceil(totalCount / pageSize) > 1 ? 60 : 0) + 'px)'">
         <ag-grid-angular
           [rowData]="contacts"
           [columnDefs]="columnDefs"
           [defaultColDef]="defaultColDef"
           [gridOptions]="gridOptions"
-          [pagination]="true"
-          [paginationPageSize]="20"
           [suppressMenuHide]="true"
           [domLayout]="'normal'"
-          style="height: 100%; width: 100%;"
+          style="width: 100%; height: 100%;"
           (gridReady)="onGridReady($event)"
           (cellClicked)="onCellClicked($event)">
         </ag-grid-angular>
+      </div>
+      <!-- Custom Pagination Controls: gridin dışında ve sabit -->
+      <div class="custom-pagination" *ngIf="Math.ceil(totalCount / pageSize) > 1">
+        <div class="pagination-info">
+          Toplam {{ totalCount }} kayıt - Sayfa {{ currentPage }} / {{ Math.ceil(totalCount / pageSize) }}
+        </div>
+        <div class="pagination-controls">
+          <button 
+            class="btn btn-sm btn-outline-primary" 
+            [disabled]="currentPage <= 1"
+            (click)="goToPreviousPage()">
+            Önceki
+          </button>
+          <span class="page-numbers">
+            <button 
+              *ngFor="let page of getPageNumbers()" 
+              class="btn btn-sm"
+              [class.btn-primary]="page === currentPage"
+              [class.btn-outline-primary]="page !== currentPage"
+              (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          </span>
+          <button 
+            class="btn btn-sm btn-outline-primary" 
+            [disabled]="currentPage >= Math.ceil(totalCount / pageSize)"
+            (click)="goToNextPage()">
+            Sonraki
+          </button>
+        </div>
       </div>
       <ng-template #noData>
         <div class="text-center p-4">
           <div class="card no-data-card">
             <div class="card-body p-5">
-              <div class="mb-4">
+              <div class="mb-4" *ngIf="!isLoading">
                 <i class="fas fa-users text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
               </div>
-              <h5 class="card-title text-muted mb-3">Kişi Bulunamadı</h5>
-              <p class="card-text text-muted mb-0">
+              <div class="mb-4" *ngIf="isLoading">
+                <i class="fas fa-spinner fa-spin text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
+              </div>
+              <h5 class="card-title text-muted mb-3">{{ isLoading ? 'Yükleniyor...' : 'Kişi Bulunamadı' }}</h5>
+              <p class="card-text text-muted mb-0" *ngIf="!isLoading">
                 Henüz kayıtlı kişi bulunmuyor veya arama kriterlerinize uygun sonuç yok.
               </p>
-              <div class="mt-4">
+              <div class="mt-4" *ngIf="!isLoading">
                 <small class="text-muted">
                   <i class="fas fa-info-circle me-1"></i>
                   Yeni kişi eklemek için "Kişi Ekle" butonunu kullanabilirsiniz.
@@ -56,21 +87,30 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 })
 export class ContactGridComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() contacts: Contact[] = [];
+  @Input() currentPage: number = 1;
+  @Input() totalCount: number = 0;
+  @Input() pageSize: number = 20;
+  @Input() isLoading: boolean = false;
+  
   @Output() editContact = new EventEmitter<Contact>();
   @Output() deleteContact = new EventEmitter<Contact>();
   @Output() toggleFavorite = new EventEmitter<Contact>();
+  @Output() pageChange = new EventEmitter<number>();
 
   private gridApi!: GridApi;
 
   public isGridReady = false;
+  public showOnlyFavorites = false;
+  public Math = Math; // Expose Math to template
 
   columnDefs: ColDef[] = [
     {
       headerName: '',
-      field: 'isFavorite',
+      field: 'favoriteFilter',
       width: 70,
+      headerClass: 'favorite-header',
       cellRenderer: (params: any) => {
-        const isFavorite = params.value;
+        const isFavorite = params.data.isFavorite;
         return `
           <div class="favorite-cell" title="${isFavorite ? 'Favorilerden çıkar' : 'Favorilere ekle'}">
             <svg class="bookmark-svg ${isFavorite ? 'active' : ''}" width="16" height="20" viewBox="0 0 24 24" fill="none">
@@ -84,6 +124,7 @@ export class ContactGridComponent implements OnInit, OnChanges, AfterViewInit {
           </div>
         `;
       },
+      headerTooltip: 'Favori filtresi',
       cellStyle: { 
         textAlign: 'center', 
         cursor: 'pointer',
@@ -93,6 +134,7 @@ export class ContactGridComponent implements OnInit, OnChanges, AfterViewInit {
       },
       sortable: false,
       filter: false,
+      floatingFilter: false,
       onCellClicked: (params) => {
         this.toggleFavorite.emit(params.data);
       }
@@ -196,8 +238,8 @@ export class ContactGridComponent implements OnInit, OnChanges, AfterViewInit {
   defaultColDef: ColDef = {
     resizable: true,
     sortable: true,
-    filter: true,
-    floatingFilter: true,
+    filter: false, // Filtering is handled server-side
+    floatingFilter: false,
     minWidth: 100
   };
 
@@ -205,74 +247,54 @@ export class ContactGridComponent implements OnInit, OnChanges, AfterViewInit {
     rowHeight: 50,
     headerHeight: 50,
     animateRows: true,
-    enableBrowserTooltips: true
+    enableBrowserTooltips: true,
+    suppressMenuHide: true
   };
 
-  ngOnInit(): void {
-    // Component initialization
-  }
+  ngOnInit(): void {}
 
-  ngAfterViewInit(): void {
-    // Grid view init'ten sonra veriler varsa set et
-    if (this.contacts && this.contacts.length > 0 && this.gridApi) {
-      this.gridApi.setGridOption('rowData', this.contacts);
-    }
-  }
+  ngAfterViewInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['contacts']) {
-      console.log('Contacts changed:', this.contacts);
-      console.log('New contacts length:', this.contacts?.length);
-      
-      if (this.gridApi) {
-        this.gridApi.setGridOption('rowData', this.contacts);
-        console.log('Grid data updated via ngOnChanges');
-      } else {
-        console.log('Grid API not ready yet');
-      }
+    if (changes['contacts'] && this.gridApi) {
+      this.gridApi.setGridOption('rowData', this.contacts);
     }
   }
 
   onGridReady(params: GridReadyEvent): void {
     this.gridApi = params.api;
     this.isGridReady = true;
-    
-    console.log('Grid Ready - Contacts:', this.contacts);
-    console.log('Contacts Length:', this.contacts?.length);
-    
-    // Grid hazır olduktan sonra verileri set et
     if (this.contacts && this.contacts.length > 0) {
       this.gridApi.setGridOption('rowData', this.contacts);
-      console.log('Row data set to grid');
-    } else {
-      console.log('No contacts data available');
     }
-    
     this.gridApi.sizeColumnsToFit();
   }
 
-  onCellClicked(event: CellClickedEvent): void {
-    // Handle cell clicks if needed
-  }
+  onCellClicked(event: CellClickedEvent): void {}
 
-  // Public methods for external control
-  exportToCsv(): void {
-    if (this.gridApi) {
-      this.gridApi.exportDataAsCsv({
-        fileName: 'contacts.csv'
-      });
+  // Pagination methods
+  goToPage(page: number): void {
+    this.pageChange.emit(page);
+  }
+  goToPreviousPage(): void {
+    if (this.currentPage > 1) {
+      this.pageChange.emit(this.currentPage - 1);
     }
   }
-
-  clearFilters(): void {
-    if (this.gridApi) {
-      this.gridApi.setFilterModel(null);
+  goToNextPage(): void {
+    const totalPages = Math.ceil(this.totalCount / this.pageSize);
+    if (this.currentPage < totalPages) {
+      this.pageChange.emit(this.currentPage + 1);
     }
   }
-
-  autoSizeColumns(): void {
-    if (this.gridApi) {
-      this.gridApi.autoSizeAllColumns();
+  getPageNumbers(): number[] {
+    const totalPages = Math.ceil(this.totalCount / this.pageSize);
+    const pages: number[] = [];
+    const startPage = Math.max(1, this.currentPage - 2);
+    const endPage = Math.min(totalPages, this.currentPage + 2);
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
     }
+    return pages;
   }
 }

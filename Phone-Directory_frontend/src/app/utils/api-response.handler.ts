@@ -30,6 +30,12 @@ export class ApiResponseHandler {
       return 'Sunucu hatası oluştu';
     } else if (error.status === 0) {
       return 'Sunucuya bağlanılamıyor';
+    } else if (error.status === 409) {
+      // Backend'den gelen duplicate telefon mesajını göster
+      if (error.error && error.error.message) {
+        return error.error.message;
+      }
+      return 'Bu telefon numarasına sahip bir kişi zaten mevcut.';
     }
     
     return error.message || 'Bilinmeyen hata oluştu';

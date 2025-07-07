@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContactService } from '../../services/contact.service';
+import { ContactService, PagedResult } from '../../services/contact.service';
 import { Contact, ContactFormData } from '../../models/contact.model';
 import { ContactCardComponent } from '../contact-card/contact-card.component';
 import { AddContactModalComponent } from '../add-contact-modal/add-contact-modal.component';
@@ -78,9 +78,14 @@ import { ContactFilter, ApiResponseHandler, FormValidator } from '../../utils';
       <div *ngIf="viewMode === 'grid'">
         <app-contact-grid
           [contacts]="filteredContacts"
+          [currentPage]="currentPage"
+          [totalCount]="totalCount"
+          [pageSize]="pageSize"
+          [isLoading]="isLoading"
           (editContact)="onEditContact($event)"
           (deleteContact)="onDeleteContact($event)"
-          (toggleFavorite)="onToggleFavorite($event)">
+          (toggleFavorite)="onToggleFavorite($event)"
+          (pageChange)="goToPage($event)">
         </app-contact-grid>
       </div>
     </div>
@@ -104,6 +109,13 @@ export class ContactListComponent implements OnInit {
   editingContact: Contact | null = null;
   editMode = false;
   viewMode: 'card' | 'grid' = 'card';
+
+  // Pagination properties
+  currentPage = 1;
+  pageSize = 20;
+  totalCount = 0;
+  totalPages = 0;
+  isLoading = false;
 
   constructor(private contactService: ContactService) {}
 
@@ -172,39 +184,73 @@ export class ContactListComponent implements OnInit {
   }
 
   loadContacts(): void {
-    this.contactService.getAllContacts().subscribe({
-      next: (contacts) => {
-        this.contacts = contacts;
+    this.isLoading = true;
+    const searchTerm = this.showOnlyFavorites ? undefined : this.searchTerm; // We'll handle favorites client-side for now
+    
+    this.contactService.getPagedContacts(this.currentPage, this.pageSize, searchTerm).subscribe({
+      next: (pagedResult: PagedResult<Contact>) => {
+        this.contacts = pagedResult.items;
+        this.totalCount = pagedResult.totalCount;
+        this.totalPages = pagedResult.totalPages || Math.ceil(this.totalCount / this.pageSize);
         this.applyFilters();
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Kişiler yüklenirken hata:', error);
+        this.isLoading = false;
       }
     });
   }
 
   toggleFavoriteFilter(): void {
     this.showOnlyFavorites = !this.showOnlyFavorites;
-    this.applyFilters();
+    this.currentPage = 1; // Reset to first page when filtering
+    this.loadContacts(); // Reload with server-side pagination
   }
 
   clearFilters(): void {
     this.searchTerm = '';
     this.showOnlyFavorites = false;
-    this.applyFilters();
+    this.currentPage = 1; // Reset to first page
+    this.loadContacts(); // Reload with server-side pagination
+  }
+
+  // Pagination methods
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+      this.currentPage = page;
+      this.loadContacts();
+    }
+  }
+
+  goToPreviousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadContacts();
+    }
+  }
+
+  goToNextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadContacts();
+    }
   }
 
   applyFilters(): void {
-    this.filteredContacts = ContactFilter.applyAllFilters(
-      this.contacts, 
-      this.searchTerm, 
-      this.showOnlyFavorites
-    );
+    // For server-side pagination, only apply client-side favorite filter
+    // Search is handled on server-side
+    if (this.showOnlyFavorites) {
+      this.filteredContacts = this.contacts.filter(contact => contact.isFavorite);
+    } else {
+      this.filteredContacts = [...this.contacts];
+    }
   }
 
   onSearchTermChange(searchTerm: string): void {
     this.searchTerm = searchTerm;
-    this.applyFilters();
+    this.currentPage = 1; // Reset to first page when searching
+    this.loadContacts(); // Reload with server-side pagination
   }
 
   hasActiveFilters(): boolean {
