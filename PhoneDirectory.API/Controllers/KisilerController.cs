@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using PhoneDirectory.Core.Entities;
 using PhoneDirectory.Core.Interfaces;
 using PhoneDirectory.API.DTOs;
@@ -6,11 +7,13 @@ using PhoneDirectory.API.Services;
 using AutoMapper;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Security.Claims;
 
 namespace PhoneDirectory.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // Controller seviyesinde Authorization
     public class KisilerController : ControllerBase
     {
         private readonly IKisiService _kisiService;
@@ -27,17 +30,24 @@ namespace PhoneDirectory.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            await _logger.LogInfoAsync("Fetching all contacts");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                await _logger.LogWarningAsync("Unauthorized access attempt to get all contacts");
+                return Unauthorized();
+            }
+
+            await _logger.LogInfoAsync($"Fetching contacts for user: {userId}");
             try
             {
-                var kisiler = await _kisiService.GetAllAsync();
+                var kisiler = await _kisiService.GetByUserIdAsync(userId);
                 var kisilerDto = _mapper.Map<List<KisiDto>>(kisiler);
-                await _logger.LogInfoAsync($"Successfully fetched {kisilerDto.Count} contacts");
+                await _logger.LogInfoAsync($"Successfully fetched {kisilerDto.Count} contacts for user: {userId}");
                 return Ok(kisilerDto);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync("Error occurred while fetching all contacts", ex.ToString());
+                await _logger.LogErrorAsync($"Error occurred while fetching contacts for user: {userId}", ex.ToString());
                 return StatusCode(500, "An error occurred while fetching contacts");
             }
         }
@@ -45,44 +55,114 @@ namespace PhoneDirectory.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateKisiDto updateKisiDto)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                await _logger.LogWarningAsync("Unauthorized access attempt to update contact");
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var existingKisi = await _kisiService.GetByIdAsync(id);
-            if (existingKisi == null)
-                return NotFound();
+            await _logger.LogInfoAsync($"Updating contact with ID: {id} for user: {userId}");
+            try
+            {
+                var existingKisi = await _kisiService.GetByIdAndUserIdAsync(id, userId);
+                if (existingKisi == null)
+                {
+                    await _logger.LogWarningAsync($"Contact with ID: {id} not found for user: {userId}");
+                    return NotFound();
+                }
 
-            // AutoMapper ile güncelleme
-            _mapper.Map(updateKisiDto, existingKisi);
-            existingKisi.UpdatedAt = DateTime.Now;
+                // AutoMapper ile güncelleme
+                _mapper.Map(updateKisiDto, existingKisi);
+                existingKisi.UpdatedAt = DateTime.Now;
 
-            var result = await _kisiService.UpdateAsync(existingKisi);
-            if (!result)
-                return StatusCode(500, "Could not update the record.");
+                var result = await _kisiService.UpdateAsync(existingKisi);
+                if (!result)
+                {
+                    await _logger.LogErrorAsync($"Failed to update contact with ID: {id} for user: {userId}");
+                    return StatusCode(500, "Could not update the record.");
+                }
 
-            var updatedKisiDto = _mapper.Map<KisiDto>(existingKisi);
-            return Ok(updatedKisiDto);
+                var updatedKisiDto = _mapper.Map<KisiDto>(existingKisi);
+                await _logger.LogInfoAsync($"Successfully updated contact with ID: {id} for user: {userId}");
+                return Ok(updatedKisiDto);
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error occurred while updating contact with ID: {id} for user: {userId}", ex.ToString());
+                return StatusCode(500, "An error occurred while updating the contact");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateKisiDto createKisiDto)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                await _logger.LogWarningAsync("Unauthorized access attempt to create contact");
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var kisi = _mapper.Map<Kisi>(createKisiDto);
-            var createdKisi = await _kisiService.AddAsync(kisi);
-            var kisiDto = _mapper.Map<KisiDto>(createdKisi);
-            
-            return CreatedAtAction(nameof(GetById), new { id = kisiDto.Id }, kisiDto);
+            await _logger.LogInfoAsync($"Creating contact for user: {userId}");
+            try
+            {
+                var kisi = _mapper.Map<Kisi>(createKisiDto);
+                kisi.UserId = userId; // Kullanıcı ID'sini atayalım
+                var createdKisi = await _kisiService.AddAsync(kisi);
+                var kisiDto = _mapper.Map<KisiDto>(createdKisi);
+                
+                await _logger.LogInfoAsync($"Successfully created contact with ID: {kisiDto.Id} for user: {userId}");
+                return CreatedAtAction(nameof(GetById), new { id = kisiDto.Id }, kisiDto);
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error occurred while creating contact for user: {userId}", ex.ToString());
+                return StatusCode(500, "An error occurred while creating the contact");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _kisiService.DeleteAsync(id);
-            if (!deleted) return NotFound();
-            return NoContent();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                await _logger.LogWarningAsync("Unauthorized access attempt to delete contact");
+                return Unauthorized();
+            }
+
+            await _logger.LogInfoAsync($"Deleting contact with ID: {id} for user: {userId}");
+            try
+            {
+                var existingKisi = await _kisiService.GetByIdAndUserIdAsync(id, userId);
+                if (existingKisi == null)
+                {
+                    await _logger.LogWarningAsync($"Contact with ID: {id} not found for user: {userId}");
+                    return NotFound();
+                }
+
+                var deleted = await _kisiService.DeleteAsync(id);
+                if (!deleted) 
+                {
+                    await _logger.LogErrorAsync($"Failed to delete contact with ID: {id} for user: {userId}");
+                    return StatusCode(500, "Could not delete the record.");
+                }
+
+                await _logger.LogInfoAsync($"Successfully deleted contact with ID: {id} for user: {userId}");
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error occurred while deleting contact with ID: {id} for user: {userId}", ex.ToString());
+                return StatusCode(500, "An error occurred while deleting the contact");
+            }
         }
 
         [HttpGet("paged")]
@@ -91,57 +171,118 @@ namespace PhoneDirectory.API.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] string? searchTerm = null)
         {
-            var result = await _kisiService.GetPagedAndFilteredAsync(pageNumber, pageSize, searchTerm);
-            
-            // PagedResult içindeki Items'ı DTO'ya çevir
-            var kisilerDto = _mapper.Map<List<KisiDto>>(result.Items);
-            
-            var pagedResultDto = new PagedResultDto<KisiDto>
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
             {
-                Items = kisilerDto,
-                TotalCount = result.TotalCount,
-                PageNumber = result.PageNumber,
-                PageSize = result.PageSize
-            };
-            
-            return Ok(pagedResultDto);
+                await _logger.LogWarningAsync("Unauthorized access attempt to get paged contacts");
+                return Unauthorized();
+            }
+
+            await _logger.LogInfoAsync($"Fetching paged contacts for user: {userId} (Page: {pageNumber}, Size: {pageSize}, Search: {searchTerm})");
+            try
+            {
+                var result = await _kisiService.GetPagedAndFilteredByUserIdAsync(pageNumber, pageSize, searchTerm, userId);
+                
+                // PagedResult içindeki Items'ı DTO'ya çevir
+                var kisilerDto = _mapper.Map<List<KisiDto>>(result.Items);
+                
+                var pagedResultDto = new PagedResultDto<KisiDto>
+                {
+                    Items = kisilerDto,
+                    TotalCount = result.TotalCount,
+                    PageNumber = result.PageNumber,
+                    PageSize = result.PageSize
+                };
+                
+                await _logger.LogInfoAsync($"Successfully fetched {kisilerDto.Count} contacts (Page: {pageNumber}) for user: {userId}");
+                return Ok(pagedResultDto);
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error occurred while fetching paged contacts for user: {userId}", ex.ToString());
+                return StatusCode(500, "An error occurred while fetching contacts");
+            }
         }
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateFavorite(int id, [FromBody] JsonElement favoriteData)
         {
-            var existingKisi = await _kisiService.GetByIdAsync(id);
-            if (existingKisi == null)
-                return NotFound();
-
-            // Favori durumunu güncelle
-            if (favoriteData.TryGetProperty("favori", out JsonElement favoriValue))
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
             {
-                existingKisi.IsFavori = favoriValue.GetBoolean();
-            }
-            else if (favoriteData.TryGetProperty("IsFavori", out JsonElement isFavoriValue))
-            {
-                existingKisi.IsFavori = isFavoriValue.GetBoolean();
+                await _logger.LogWarningAsync("Unauthorized access attempt to update favorite status");
+                return Unauthorized();
             }
 
-            existingKisi.UpdatedAt = DateTime.Now;
+            await _logger.LogInfoAsync($"Updating favorite status for contact with ID: {id} for user: {userId}");
+            try
+            {
+                var existingKisi = await _kisiService.GetByIdAndUserIdAsync(id, userId);
+                if (existingKisi == null)
+                {
+                    await _logger.LogWarningAsync($"Contact with ID: {id} not found for user: {userId}");
+                    return NotFound();
+                }
 
-            var result = await _kisiService.UpdateAsync(existingKisi);
-            if (!result)
-                return StatusCode(500, "Could not update the record.");
+                // Favori durumunu güncelle
+                if (favoriteData.TryGetProperty("favori", out JsonElement favoriValue))
+                {
+                    existingKisi.IsFavori = favoriValue.GetBoolean();
+                }
+                else if (favoriteData.TryGetProperty("IsFavori", out JsonElement isFavoriValue))
+                {
+                    existingKisi.IsFavori = isFavoriValue.GetBoolean();
+                }
 
-            var kisiDto = _mapper.Map<KisiDto>(existingKisi);
-            return Ok(kisiDto);
+                existingKisi.UpdatedAt = DateTime.Now;
+
+                var result = await _kisiService.UpdateAsync(existingKisi);
+                if (!result)
+                {
+                    await _logger.LogErrorAsync($"Failed to update favorite status for contact with ID: {id} for user: {userId}");
+                    return StatusCode(500, "Could not update the record.");
+                }
+
+                var kisiDto = _mapper.Map<KisiDto>(existingKisi);
+                await _logger.LogInfoAsync($"Successfully updated favorite status for contact with ID: {id} for user: {userId}");
+                return Ok(kisiDto);
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error occurred while updating favorite status for contact with ID: {id} for user: {userId}", ex.ToString());
+                return StatusCode(500, "An error occurred while updating favorite status");
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var kisi = await _kisiService.GetByIdAsync(id);
-            if (kisi == null) return NotFound();
-            
-            var kisiDto = _mapper.Map<KisiDto>(kisi);
-            return Ok(kisiDto);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                await _logger.LogWarningAsync("Unauthorized access attempt to get contact by ID");
+                return Unauthorized();
+            }
+
+            await _logger.LogInfoAsync($"Fetching contact with ID: {id} for user: {userId}");
+            try
+            {
+                var kisi = await _kisiService.GetByIdAndUserIdAsync(id, userId);
+                if (kisi == null) 
+                {
+                    await _logger.LogWarningAsync($"Contact with ID: {id} not found for user: {userId}");
+                    return NotFound();
+                }
+                
+                var kisiDto = _mapper.Map<KisiDto>(kisi);
+                await _logger.LogInfoAsync($"Successfully fetched contact with ID: {id} for user: {userId}");
+                return Ok(kisiDto);
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error occurred while fetching contact with ID: {id} for user: {userId}", ex.ToString());
+                return StatusCode(500, "An error occurred while fetching the contact");
+            }
         }
     }
 }

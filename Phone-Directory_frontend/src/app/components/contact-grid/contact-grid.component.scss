@@ -1,0 +1,520 @@
+/* MINIMAL AG-GRID STYLING - DATA VISIBILITY FOCUSED */
+
+.ag-theme-quartz {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+/* Grid genel font ayarları */
+.ag-theme-quartz .ag-header,
+.ag-theme-quartz .ag-row,
+.ag-theme-quartz .ag-cell,
+.ag-theme-quartz .ag-header-cell-text,
+.ag-theme-quartz .ag-floating-filter-input {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+/* Pagination ve diğer bileşenler için font */
+.ag-theme-quartz .ag-paging-panel,
+.ag-theme-quartz .ag-paging-button,
+.ag-theme-quartz .ag-status-bar,
+.ag-theme-quartz .ag-menu,
+.ag-theme-quartz .ag-popup {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+/* Button ve link fontları */
+.ag-theme-quartz button,
+.ag-theme-quartz a,
+.ag-theme-quartz span,
+.ag-theme-quartz div {
+  font-family: inherit !important;
+}
+
+/* Email ve telefon için tıklanabilir linkler */
+.ag-theme-quartz .ag-cell a {
+  color: inherit !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.ag-theme-quartz .ag-cell a:hover {
+  opacity: 0.7;
+}
+
+/* Email hücresi için özel stilleme */
+.ag-theme-quartz .ag-cell[col-id="email"] {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  padding: 8px 12px !important;
+}
+
+.ag-theme-quartz .ag-cell[col-id="email"] .email-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ag-theme-quartz .ag-cell[col-id="email"] .email-icon {
+  flex-shrink: 0;
+  margin-right: 6px;
+  color: #666;
+}
+
+.ag-theme-quartz .ag-cell[col-id="email"] .email-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: transform 0.3s ease;
+  min-width: 0;
+}
+
+.ag-theme-quartz .ag-cell[col-id="email"]:hover .email-text {
+  animation: scrollEmail 3s linear infinite;
+}
+
+@keyframes scrollEmail {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(0); }
+  80% { transform: translateX(calc(-100% + 120px)); }
+  100% { transform: translateX(calc(-100% + 120px)); }
+}
+
+/* Telefon hücresi için özel stilleme */
+.ag-theme-quartz .ag-cell[col-id="phoneNumber"] {
+  white-space: nowrap !important;
+  padding: 8px 12px !important;
+}
+
+.ag-theme-quartz .ag-cell[col-id="phoneNumber"] a {
+  font-weight: 500;
+}
+
+/* DARK THEME SUPPORT */
+[data-theme="dark"] .ag-theme-quartz {
+  background: #2a2a2a !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #444;
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+/* Dark tema font ayarları */
+[data-theme="dark"] .ag-theme-quartz .ag-header,
+[data-theme="dark"] .ag-theme-quartz .ag-row,
+[data-theme="dark"] .ag-theme-quartz .ag-cell,
+[data-theme="dark"] .ag-theme-quartz .ag-header-cell-text,
+[data-theme="dark"] .ag-theme-quartz .ag-floating-filter-input {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+/* Dark tema pagination ve diğer bileşenler */
+[data-theme="dark"] .ag-theme-quartz .ag-paging-panel,
+[data-theme="dark"] .ag-theme-quartz .ag-paging-button,
+[data-theme="dark"] .ag-theme-quartz .ag-status-bar,
+[data-theme="dark"] .ag-theme-quartz .ag-menu,
+[data-theme="dark"] .ag-theme-quartz .ag-popup {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+/* Dark tema button ve link fontları */
+[data-theme="dark"] .ag-theme-quartz button,
+[data-theme="dark"] .ag-theme-quartz a,
+[data-theme="dark"] .ag-theme-quartz span,
+[data-theme="dark"] .ag-theme-quartz div {
+  font-family: inherit !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-root-wrapper {
+  background: #2a2a2a !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-body-viewport,
+[data-theme="dark"] .ag-theme-quartz .ag-body,
+[data-theme="dark"] .ag-theme-quartz .ag-center-cols-viewport,
+[data-theme="dark"] .ag-theme-quartz .ag-center-cols-container {
+  background: #2a2a2a !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-row {
+  background: #2a2a2a !important;
+  color: #f0f0f0 !important;
+  border-bottom: 1px solid #444;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-row:nth-child(even) {
+  background: #333333 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-row:hover {
+  background: #404040 !important;
+  color: #f0f0f0 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell {
+  color: #f0f0f0 !important;
+  background: transparent !important;
+  border-right: 1px solid #444;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell * {
+  color: #f0f0f0 !important;
+}
+
+/* Dark tema için email ve telefon linkleri */
+[data-theme="dark"] .ag-theme-quartz .ag-cell a {
+  color: #f0f0f0 !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell a:hover {
+  opacity: 0.7;
+}
+
+/* Dark tema email hücresi */
+[data-theme="dark"] .ag-theme-quartz .ag-cell[col-id="email"] {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  padding: 8px 12px !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell[col-id="email"] .email-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-decoration: none;
+  color: #f0f0f0;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell[col-id="email"] .email-icon {
+  flex-shrink: 0;
+  margin-right: 6px;
+  color: #ccc;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell[col-id="email"] .email-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: transform 0.3s ease;
+  min-width: 0;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell[col-id="email"]:hover .email-text {
+  animation: scrollEmail 3s linear infinite;
+}
+
+/* Dark tema telefon hücresi */
+[data-theme="dark"] .ag-theme-quartz .ag-cell[col-id="phoneNumber"] {
+  white-space: nowrap !important;
+  padding: 8px 12px !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell[col-id="phoneNumber"] a {
+  font-weight: 500;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-header {
+  background: #34495e !important;
+  color: #f0f0f0 !important;
+  border-bottom: 2px solid #d4af37;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-header .ag-header-cell {
+  color: #f0f0f0 !important;
+  background: transparent !important;
+  font-weight: bold;
+  border-right: 1px solid #4a6278;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-header-cell-text {
+  color: #f0f0f0 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz [class*="ag-"] {
+  color: #f0f0f0 !important;
+}
+
+/* Dark theme butonlar */
+[data-theme="dark"] .ag-theme-quartz .edit-btn,
+[data-theme="dark"] .ag-theme-quartz .delete-btn {
+  border: 1px solid #555;
+  background: #333;
+}
+
+[data-theme="dark"] .ag-theme-quartz .edit-btn {
+  color: #4dabf7;
+  border-color: #4dabf7;
+}
+
+[data-theme="dark"] .ag-theme-quartz .edit-btn:hover {
+  background: #4dabf7;
+  color: white;
+}
+
+[data-theme="dark"] .ag-theme-quartz .delete-btn {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+[data-theme="dark"] .ag-theme-quartz .delete-btn:hover {
+  background: #ff6b6b;
+  color: white;
+}
+
+/* Dark theme favori ikon */
+[data-theme="dark"] .ag-theme-quartz .bookmark-svg {
+  color: #ccc;
+}
+
+[data-theme="dark"] .ag-theme-quartz .bookmark-svg.active {
+  color: #d4af37;
+}
+
+/* Dark theme ikonlar */
+[data-theme="dark"] .ag-theme-quartz .fas {
+  color: #ccc;
+}
+
+/* Dark theme pagination */
+[data-theme="dark"] .ag-theme-quartz .ag-paging-panel {
+  background: #1e1e1e !important;
+  color: #f0f0f0 !important;
+  border-top: 2px solid #d4af37;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-paging-button {
+  background: #333 !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #555;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-paging-button:hover:not(.ag-disabled) {
+  background: #d4af37 !important;
+  color: white !important;
+  border-color: #d4af37;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-paging-button.ag-selected {
+  background: #d4af37 !important;
+  color: white !important;
+  border-color: #d4af37;
+}
+
+/* Dark theme filter - Veri listesiyle aynı renk */
+[data-theme="dark"] .ag-theme-quartz .ag-floating-filter-input {
+  background: #2a2a2a !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #444 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-floating-filter-input:focus {
+  border-color: #d4af37 !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-floating-filter-body {
+  background: #2a2a2a !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-header-row {
+  background: #2a2a2a !important;
+}
+
+/* Debug: Her şeyi görünür yap */
+.ag-theme-quartz .ag-root-wrapper {
+  background: white !important;
+}
+
+.ag-theme-quartz .ag-body-viewport,
+.ag-theme-quartz .ag-body,
+.ag-theme-quartz .ag-center-cols-viewport,
+.ag-theme-quartz .ag-center-cols-container {
+  background: white !important;
+}
+
+.ag-theme-quartz .ag-row {
+  background: white !important;
+  color: black !important;
+  border-bottom: 1px solid #eee;
+}
+
+.ag-theme-quartz .ag-row:nth-child(even) {
+  background: #f9f9f9 !important;
+}
+
+.ag-theme-quartz .ag-row:hover {
+  background: #f5f5f5 !important;
+  color: black !important;
+}
+
+.ag-theme-quartz .ag-cell {
+  color: black !important;
+  background: transparent !important;
+  border-right: 1px solid #eee;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+}
+
+.ag-theme-quartz .ag-cell * {
+  color: black !important;
+}
+
+.ag-theme-quartz .ag-cell span,
+.ag-theme-quartz .ag-cell div,
+.ag-theme-quartz .ag-cell strong,
+.ag-theme-quartz .ag-cell i {
+  color: black !important;
+}
+
+.ag-theme-quartz .ag-header {
+  background: #34495e !important;
+  color: white !important;
+  border-bottom: 2px solid #d4af37;
+}
+
+.ag-theme-quartz .ag-header .ag-header-cell {
+  color: white !important;
+  background: transparent !important;
+  font-weight: bold;
+  border-right: 1px solid #4a6278;
+}
+
+.ag-theme-quartz .ag-header-cell-text {
+  color: white !important;
+}
+
+/* Light theme filter - Veri listesiyle aynı renk */
+.ag-theme-quartz .ag-floating-filter-input {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #eee !important;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+.ag-theme-quartz .ag-floating-filter-input:focus {
+  border-color: #d4af37 !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  outline: none;
+}
+
+.ag-theme-quartz .ag-floating-filter-body {
+  background: white !important;
+}
+
+.ag-theme-quartz .ag-header-row {
+  background: white !important;
+}
+
+/* Force all text elements to be visible */
+.ag-theme-quartz [class*="ag-"] {
+  color: black !important;
+}
+
+/* Favori ikonu */
+.ag-theme-quartz .favorite-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ag-theme-quartz .bookmark-svg {
+  color: #666;
+  width: 16px;
+  height: 20px;
+}
+
+.ag-theme-quartz .bookmark-svg.active {
+  color: #d4af37;
+}
+
+/* Butonlar */
+.ag-theme-quartz .edit-btn,
+.ag-theme-quartz .delete-btn {
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-quartz .edit-btn {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.ag-theme-quartz .edit-btn:hover {
+  background: #007bff;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.ag-theme-quartz .delete-btn {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.ag-theme-quartz .delete-btn:hover {
+  background: #dc3545;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Text içinde ikonlar */
+.ag-theme-quartz .fas {
+  margin-right: 4px;
+  color: #666;
+}
+
+/* Pagination styling */
+.ag-theme-quartz .ag-paging-panel {
+  background: #275076 !important;
+  color: black !important;
+  border-top: 2px solid #d4af37;
+  padding: 12px;
+}
+
+.ag-theme-quartz .ag-paging-button {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0 2px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-quartz .ag-paging-button:hover:not(.ag-disabled) {
+  background: #d4af37 !important;
+  color: white !important;
+  border-color: #d4af37;
+}
+
+.ag-theme-quartz .ag-paging-button.ag-selected {
+  background: #d4af37 !important;
+  color: white !important;
+  border-color: #d4af37;
+}

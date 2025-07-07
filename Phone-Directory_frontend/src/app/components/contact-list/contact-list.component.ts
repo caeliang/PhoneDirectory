@@ -5,12 +5,13 @@ import { Contact, ContactFormData } from '../../models/contact.model';
 import { ContactCardComponent } from '../contact-card/contact-card.component';
 import { AddContactModalComponent } from '../add-contact-modal/add-contact-modal.component';
 import { ContactFilterComponent } from '../contact-filter/contact-filter.component';
+import { ContactGridComponent } from '../contact-grid/contact-grid.component';
 import { ContactFilter, ApiResponseHandler, FormValidator } from '../../utils';
 
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [CommonModule, ContactCardComponent, AddContactModalComponent, ContactFilterComponent],
+  imports: [CommonModule, ContactCardComponent, AddContactModalComponent, ContactFilterComponent, ContactGridComponent],
   template: `
     <div class="container mt-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
@@ -31,6 +32,29 @@ import { ContactFilter, ApiResponseHandler, FormValidator } from '../../utils';
         </div>
       </div>
 
+      <!-- View Toggle Buttons -->
+      <div class="view-toggle-section mb-3">
+        <div class="d-flex justify-content-end gap-3">
+          <button 
+            type="button"
+            class="btn view-toggle-btn"
+            [class.btn-primary]="viewMode === 'card'"
+            [class.btn-outline-primary]="viewMode !== 'card'"
+            (click)="setViewMode('card')">
+            <i class="fas fa-th-large"></i> Kartlar
+          </button>
+          
+          <button 
+            type="button"
+            class="btn view-toggle-btn"
+            [class.btn-primary]="viewMode === 'grid'"
+            [class.btn-outline-primary]="viewMode !== 'grid'"
+            (click)="setViewMode('grid')">
+            <i class="fas fa-table"></i> Tablo
+          </button>
+        </div>
+      </div>
+
       <div *ngIf="filteredContacts.length === 0" class="text-center mt-4">
         <div class="card p-4">
           <span *ngIf="!showOnlyFavorites && !searchTerm">Kayıtlı kişi bulunamadı.</span>
@@ -39,7 +63,8 @@ import { ContactFilter, ApiResponseHandler, FormValidator } from '../../utils';
         </div>
       </div>
       
-      <div class="d-flex flex-wrap gap-3">
+      <!-- Card View -->
+      <div *ngIf="viewMode === 'card'" class="d-flex flex-wrap gap-3">
         <app-contact-card 
           *ngFor="let contact of filteredContacts"
           [contact]="contact"
@@ -47,6 +72,16 @@ import { ContactFilter, ApiResponseHandler, FormValidator } from '../../utils';
           (editContact)="onEditContact(contact)"
           (deleteContact)="onDeleteContact(contact)">
         </app-contact-card>
+      </div>
+
+      <!-- Grid View -->
+      <div *ngIf="viewMode === 'grid'">
+        <app-contact-grid
+          [contacts]="filteredContacts"
+          (editContact)="onEditContact($event)"
+          (deleteContact)="onDeleteContact($event)"
+          (toggleFavorite)="onToggleFavorite($event)">
+        </app-contact-grid>
       </div>
     </div>
 
@@ -68,6 +103,7 @@ export class ContactListComponent implements OnInit {
   showOnlyFavorites = false;
   editingContact: Contact | null = null;
   editMode = false;
+  viewMode: 'card' | 'grid' = 'card';
 
   constructor(private contactService: ContactService) {}
 
@@ -87,6 +123,10 @@ export class ContactListComponent implements OnInit {
 
   // 🚀 Main Component Methods - Ana Component Metodları
 
+  setViewMode(mode: 'card' | 'grid'): void {
+    this.viewMode = mode;
+  }
+
   openAddModal(): void {
     this.editMode = false;
     this.editingContact = null;
@@ -94,7 +134,6 @@ export class ContactListComponent implements OnInit {
   }
 
   onEditContact(contact: Contact): void {
-    console.log(`Düzenleme modalı açılıyor: ${contact.firstName} ${contact.lastName}`);
     this.editMode = true;
     this.editingContact = contact;
     this.showModal = true;
@@ -113,10 +152,8 @@ export class ContactListComponent implements OnInit {
 
     if (this.editMode && this.editingContact) {
       // Düzenleme modu
-      console.log('Kişi güncelleniyor:', formData);
       this.contactService.updateContact(this.editingContact.id!, formData).subscribe({
         next: (updatedContact) => {
-          console.log('Kişi başarıyla güncellendi:', updatedContact);
           this.loadContacts();
           this.closeModal();
         },
@@ -124,10 +161,8 @@ export class ContactListComponent implements OnInit {
       });
     } else {
       // Ekleme modu
-      console.log('Yeni kişi ekleniyor:', formData);
       this.contactService.addContact(formData).subscribe({
         next: (newContact) => {
-          console.log('Kişi başarıyla eklendi:', newContact);
           this.loadContacts();
           this.closeModal();
         },
@@ -137,12 +172,10 @@ export class ContactListComponent implements OnInit {
   }
 
   loadContacts(): void {
-    console.log('Kişiler yeniden yükleniyor...');
     this.contactService.getAllContacts().subscribe({
       next: (contacts) => {
         this.contacts = contacts;
         this.applyFilters();
-        console.log(`${contacts.length} kişi yüklendi`);
       },
       error: (error) => {
         console.error('Kişiler yüklenirken hata:', error);
@@ -152,14 +185,12 @@ export class ContactListComponent implements OnInit {
 
   toggleFavoriteFilter(): void {
     this.showOnlyFavorites = !this.showOnlyFavorites;
-    console.log(`Favori filtresi: ${this.showOnlyFavorites ? 'Açık' : 'Kapalı'}`);
     this.applyFilters();
   }
 
   clearFilters(): void {
     this.searchTerm = '';
     this.showOnlyFavorites = false;
-    console.log('Tüm filtreler temizlendi');
     this.applyFilters();
   }
 
@@ -186,12 +217,9 @@ export class ContactListComponent implements OnInit {
 
   onToggleFavorite(contact: Contact): void {
     if (contact.id == null) return;
-
-    console.log(`${contact.firstName} ${contact.lastName} favori durumu değiştiriliyor: ${contact.isFavorite} → ${!contact.isFavorite}`);
     
     this.contactService.toggleFavorite(contact.id, !contact.isFavorite).subscribe({
       next: (updatedContact) => {
-        console.log(`Favori durumu güncellendi:`, updatedContact);
         this.loadContacts(); // Listeyi yenile
       },
       error: (error) => this.showError('Favori durumu güncellenirken', error)
@@ -200,12 +228,9 @@ export class ContactListComponent implements OnInit {
 
   onDeleteContact(contact: Contact): void {
     if (contact.id == null) return;
-
-    console.log(`${contact.firstName} ${contact.lastName} kişisi siliniyor...`);
     
     this.contactService.deleteContact(contact.id).subscribe({
       next: () => {
-        console.log(`Kişi silindi: ${contact.firstName} ${contact.lastName}`);
         this.loadContacts(); // Listeyi yenile
       },
       error: (error) => this.showError('Kişi silinirken', error)

@@ -1,4 +1,58 @@
-    // Page Header
+/* Contact List Tema Uyumlu Stiller */
+
+/* View Toggle Section - positioned below search bar */
+.view-toggle-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* View Toggle Butonları */
+.view-toggle-btn {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--card-bg);
+  transition: all 0.3s ease;
+  font-weight: 500;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  border-radius: 6px;
+  border: 1px solid var(--accent-primary);
+  margin: 0 !important;
+}
+
+.view-toggle-btn:hover {
+  background: var(--button-hover-bg);
+  border-color: var(--accent-secondary);
+  color: var(--accent-secondary);
+  transform: translateY(-1px);
+}
+
+.view-toggle-btn.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  border-color: var(--accent-primary);
+  color: white;
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.view-toggle-btn.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+  transform: translateY(-1px);
+}
+
+.view-toggle-btn .fas {
+  margin-right: 6px;
+  opacity: 0.8;
+}
+
+.view-toggle-btn.btn-primary .fas {
+  opacity: 1;
+}
+
+// Page Header
 h2 {
   color: var(--text-primary);
   font-family: 'Georgia', 'Times New Roman', serif;
@@ -50,10 +104,58 @@ h2 {
   font-family: 'Georgia', 'Times New Roman', serif;
 }
 
+/* Dark theme desteği */
+[data-theme="dark"] .view-toggle-btn {
+  background: var(--card-bg);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+[data-theme="dark"] .view-toggle-btn:hover {
+  background: var(--button-hover-bg);
+}
+
+[data-theme="dark"] .view-toggle-btn.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
+}
+
+[data-theme="dark"] .primary-btn {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 // Responsive Design
 @media (max-width: 768px) {
   .d-flex.justify-content-between {
     flex-direction: column;
     gap: 1rem;
+  }
+  
+  .d-flex.gap-2.align-items-center {
+    flex-wrap: wrap;
+    gap: 0.5rem !important;
+  }
+  
+  .view-toggle-section {
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-top: 0.75rem;
+  }
+  
+  .view-toggle-section .d-flex {
+    gap: 1rem !important;
+  }
+  
+  .view-toggle-btn {
+    flex: 0 0 auto;
+    font-size: 14px;
+    padding: 10px 16px;
+    min-width: 120px;
+  }
+  
+  .primary-btn {
+    width: 100%;
+    margin-top: 0.5rem;
   }
 }

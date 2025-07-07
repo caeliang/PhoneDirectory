@@ -14,5 +14,8 @@ namespace PhoneDirectory.Core.Entities
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+        // Navigation property
+        public virtual ICollection<Kisi> Kisiler { get; set; } = new List<Kisi>();
     }
 }
