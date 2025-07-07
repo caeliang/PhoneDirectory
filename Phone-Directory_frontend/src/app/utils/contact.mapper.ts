@@ -10,8 +10,6 @@ export class ContactMapper {
    */
   static mapApiContactToContact(apiContact: any): Contact {
     // Backend C# modelinde IsFavori kullanılıyor
-    console.log('🎯 ContactMapper: Backend verisi', apiContact);
-    
     let favoriteValue = false;
     
     // Tüm olası favori alan isimlerini kontrol et
@@ -19,12 +17,9 @@ export class ContactMapper {
     for (const key of favoriteKeys) {
       if (apiContact.hasOwnProperty(key) && apiContact[key] !== undefined && apiContact[key] !== null) {
         favoriteValue = Boolean(apiContact[key]);
-        console.log(`🎯 Favori değeri bulundu: ${key} = ${apiContact[key]} → ${favoriteValue}`);
         break;
       }
     }
-    
-    console.log('🎯 Final favori değeri:', favoriteValue);
 
     return {
       id: apiContact.Id || apiContact.id,
@@ -32,9 +27,9 @@ export class ContactMapper {
       lastName: apiContact.Soyad || apiContact.soyad || '',
       phoneNumber: apiContact.Telefon || apiContact.telefon || '',
       email: this.cleanStringValue(apiContact.Email || apiContact.email),
-      address: this.cleanStringValue(apiContact.Address || apiContact.adres),
-      company: this.cleanStringValue(apiContact.Company || apiContact.sirket),
-      notes: this.cleanStringValue(apiContact.Notes || apiContact.notlar),
+      address: this.cleanStringValue(apiContact.Address || apiContact.address || apiContact.adres),
+      company: this.cleanStringValue(apiContact.Company || apiContact.company || apiContact.sirket),
+      notes: this.cleanStringValue(apiContact.Notes || apiContact.notes || apiContact.notlar),
       isFavorite: favoriteValue,
       createdAt: apiContact.CreatedAt || apiContact.createdAt ? new Date(apiContact.CreatedAt || apiContact.createdAt) : undefined,
       updatedAt: apiContact.UpdatedAt || apiContact.updatedAt ? new Date(apiContact.UpdatedAt || apiContact.updatedAt) : undefined

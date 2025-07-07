@@ -101,13 +101,13 @@ namespace PhoneDirectory.API.Controllers
         }
 
         [HttpPost("logout")]
-        [Authorize]
         public async Task<IActionResult> Logout()
         {
+            // Token varsa kullanıcı bilgilerini al, yoksa anonymous logout
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var username = User.FindFirst(ClaimTypes.Name)?.Value;
+            var username = User.FindFirst(ClaimTypes.Name)?.Value ?? "Anonymous";
             
-            await _logger.LogInfoAsync($"User logged out: {username} (ID: {userId})");
+            await _logger.LogInfoAsync($"User logged out: {username} (ID: {userId ?? "N/A"})");
             
             // JWT ile logout işlemi client-side'da token'ı silmekle olur
             // Server-side'da token blacklist'i implement edilebilir

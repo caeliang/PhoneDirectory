@@ -1,0 +1,692 @@
+/* AG-GRID STYLING */
+
+/* Base theme */
+.ag-theme-quartz {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+.ag-theme-quartz *,
+.ag-theme-quartz .ag-header,
+.ag-theme-quartz .ag-row,
+.ag-theme-quartz .ag-cell,
+.ag-theme-quartz .ag-header-cell-text,
+.ag-theme-quartz .ag-floating-filter-input,
+.ag-theme-quartz .ag-paging-panel,
+.ag-theme-quartz .ag-paging-button,
+.ag-theme-quartz button,
+.ag-theme-quartz a,
+.ag-theme-quartz span,
+.ag-theme-quartz div {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+/* Grid structure */
+.ag-theme-quartz .ag-root-wrapper,
+.ag-theme-quartz .ag-body-viewport,
+.ag-theme-quartz .ag-body,
+.ag-theme-quartz .ag-center-cols-viewport,
+.ag-theme-quartz .ag-center-cols-container {
+  background: white !important;
+}
+
+.ag-theme-quartz .ag-row {
+  background: white !important;
+  color: black !important;
+  border-bottom: 1px solid #eee;
+}
+
+.ag-theme-quartz .ag-row:nth-child(even) {
+  background: #f9f9f9 !important;
+}
+
+.ag-theme-quartz .ag-row:hover {
+  background: #f5f5f5 !important;
+}
+
+.ag-theme-quartz .ag-cell {
+  color: black !important;
+  background: transparent !important;
+  border-right: 1px solid #eee;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+}
+
+.ag-theme-quartz .ag-cell * {
+  color: black !important;
+}
+
+/* Icon styling */
+.ag-theme-quartz .ag-cell .fas,
+.ag-theme-quartz .ag-cell .fa {
+  margin-right: 6px !important;
+  color: #666 !important;
+  font-size: 14px !important;
+}
+
+.ag-theme-quartz .ag-cell .fa-phone {
+  color: #28a745 !important;
+}
+
+.ag-theme-quartz .ag-cell .fa-envelope {
+  color: #007bff !important;
+}
+
+.ag-theme-quartz .ag-cell .fa-building {
+  color: #6c757d !important;
+}
+
+/* Header */
+.ag-theme-quartz .ag-header {
+  background: #34495e !important;
+  color: white !important;
+  border-bottom: 2px solid #d4af37;
+}
+
+.ag-theme-quartz .ag-header .ag-header-cell {
+  color: #d4af37 !important;
+  background: transparent !important;
+  font-weight: bold;
+  border-right: none;
+}
+
+/* Filter */
+.ag-theme-quartz .ag-floating-filter-input {
+  background: #34495e !important;
+  color: white !important;
+}
+
+/* Custom Favori Filter Button */
+.ag-theme-quartz .favorite-filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 32px;
+  cursor: pointer;
+  background: rgba(52, 73, 94, 0.3);
+  border: none;
+  border-radius: 0;
+  transition: all 0.3s ease;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.ag-theme-quartz .favorite-filter-btn:hover {
+  background: rgba(61, 86, 110, 0.5);
+  transform: scale(1.05);
+}
+
+.ag-theme-quartz .favorite-filter-btn.active {
+  background: rgba(212, 175, 55, 0.4);
+}
+
+.ag-theme-quartz .favorite-filter-btn.active:hover {
+  background: rgba(193, 155, 38, 0.6);
+}
+
+.ag-theme-quartz .favorite-filter-btn .bookmark-svg {
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.ag-theme-quartz .favorite-filter-btn:hover .bookmark-svg {
+  color: #d4af37;
+}
+
+.ag-theme-quartz .favorite-filter-btn.active .bookmark-svg {
+  color: #d4af37;
+}
+
+/* Make the header cell position relative for absolute positioning */
+.ag-theme-quartz .favorite-header {
+  position: relative !important;
+  padding: 0 !important;
+}
+
+/* Email cell styling */
+.ag-theme-quartz .ag-cell[col-id="email"] {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  padding: 8px 12px !important;
+}
+
+.ag-theme-quartz .ag-cell[col-id="email"] .email-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ag-theme-quartz .ag-cell[col-id="email"] .email-icon {
+  flex-shrink: 0;
+  margin-right: 6px !important;
+  color: #007bff !important;
+  font-size: 14px !important;
+}
+
+.ag-theme-quartz .ag-cell[col-id="email"] .email-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: transform 0.3s ease;
+  min-width: 0;
+}
+
+.ag-theme-quartz .ag-cell[col-id="email"]:hover .email-text {
+  animation: scrollEmail 3s linear infinite;
+}
+
+@keyframes scrollEmail {
+  0%, 20% { transform: translateX(0); }
+  80%, 100% { transform: translateX(calc(-100% + 120px)); }
+}
+
+/* Phone cell styling */
+.ag-theme-quartz .ag-cell[col-id="phoneNumber"] {
+  white-space: nowrap !important;
+  padding: 8px 12px !important;
+}
+
+.ag-theme-quartz .ag-cell[col-id="phoneNumber"] a {
+  font-weight: 500;
+}
+
+/* Links */
+.ag-theme-quartz .ag-cell a {
+  color: inherit !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.ag-theme-quartz .ag-cell a:hover {
+  opacity: 0.7;
+}
+
+/* Icons and buttons */
+.ag-theme-quartz .favorite-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ag-theme-quartz .bookmark-svg {
+  color: #666;
+  width: 16px;
+  height: 20px;
+}
+
+.ag-theme-quartz .bookmark-svg.active {
+  color: #d4af37;
+}
+
+.ag-theme-quartz .edit-btn,
+.ag-theme-quartz .delete-btn {
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-quartz .edit-btn .fas,
+.ag-theme-quartz .delete-btn .fas {
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ag-theme-quartz .edit-btn {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.ag-theme-quartz .edit-btn:hover {
+  background: rgba(0, 123, 255, 0.1);
+  color: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.ag-theme-quartz .delete-btn {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.ag-theme-quartz .delete-btn:hover {
+  background: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+  border-color: #c82333;
+  transform: translateY(-1px);
+}
+
+.ag-theme-quartz .fas {
+  margin-right: 4px;
+  color: #666;
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  display: inline-block !important;
+  text-align: center;
+}
+
+/* Pagination */
+.ag-theme-quartz .ag-paging-panel {
+  background: #275076 !important;
+  color: #d4af37 !important;
+  border-top: 2px solid #d4af37;
+  padding: 12px;
+}
+
+.ag-theme-quartz .ag-paging-button {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0 2px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-quartz .ag-paging-button:hover:not(.ag-disabled),
+.ag-theme-quartz .ag-paging-button.ag-selected {
+  background: #d4af37 !important;
+  color: white !important;
+  border-color: #d4af37;
+}
+
+/* Custom Pagination Styles */
+.custom-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.pagination-info {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 5px;
+}
+
+.pagination-controls .btn {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 0.875rem;
+  min-width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-controls .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-controls .btn-primary {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+.pagination-controls .btn-outline-primary {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.pagination-controls .btn-outline-primary:hover:not(:disabled) {
+  background-color: var(--accent-primary);
+  color: white;
+}
+
+/* DARK THEME */
+[data-theme="dark"] .ag-theme-quartz {
+  background: #2a2a2a !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #444;
+}
+
+[data-theme="dark"] .ag-theme-quartz *,
+[data-theme="dark"] .ag-theme-quartz .ag-header,
+[data-theme="dark"] .ag-theme-quartz .ag-row,
+[data-theme="dark"] .ag-theme-quartz .ag-cell,
+[data-theme="dark"] .ag-theme-quartz .ag-header-cell-text,
+[data-theme="dark"] .ag-theme-quartz .ag-floating-filter-input,
+[data-theme="dark"] .ag-theme-quartz .ag-paging-panel,
+[data-theme="dark"] .ag-theme-quartz .ag-paging-button,
+[data-theme="dark"] .ag-theme-quartz button,
+[data-theme="dark"] .ag-theme-quartz a,
+[data-theme="dark"] .ag-theme-quartz span,
+[data-theme="dark"] .ag-theme-quartz div {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-root-wrapper,
+[data-theme="dark"] .ag-theme-quartz .ag-body-viewport,
+[data-theme="dark"] .ag-theme-quartz .ag-body,
+[data-theme="dark"] .ag-theme-quartz .ag-center-cols-viewport,
+[data-theme="dark"] .ag-theme-quartz .ag-center-cols-container,
+[data-theme="dark"] .ag-theme-quartz .ag-floating-filter-body,
+[data-theme="dark"] .ag-theme-quartz .ag-header-row {
+  background: #2a2a2a !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-row {
+  background: #2a2a2a !important;
+  color: #f0f0f0 !important;
+  border-bottom: 1px solid #444;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-row:nth-child(even) {
+  background: #333333 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-row:hover {
+  background: #404040 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell {
+  color: #f0f0f0 !important;
+  background: transparent !important;
+  border-right: 1px solid #444;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell * {
+  color: #f0f0f0 !important;
+}
+
+/* Dark theme icon styling */
+[data-theme="dark"] .ag-theme-quartz .ag-cell .fas,
+[data-theme="dark"] .ag-theme-quartz .ag-cell .fa {
+  margin-right: 6px !important;
+  font-size: 14px !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell .fa-phone {
+  color: #20c997 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell .fa-envelope {
+  color: #4dabf7 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-cell .fa-building {
+  color: #adb5bd !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-header {
+  background: #34495e !important;
+  color: #f0f0f0 !important;
+  border-bottom: 2px solid #d4af37;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-header .ag-header-cell {
+  color: #d4af37 !important;
+  background: transparent !important;
+  font-weight: bold;
+  border-right: none;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-floating-filter-input {
+  background: #2a2a2a !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #444 !important;
+}
+
+[data-theme="dark"] .ag-theme-quartz .ag-floating-filter-input:focus {
+  border-color: #d4af37 !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+/* Dark Theme Custom Favori Filter Button */
+[data-theme="dark"] .ag-theme-quartz .favorite-filter-btn {
+  background: #34495e;
+  border: 1px solid #444;
+}
+
+[data-theme="dark"] .ag-theme-quartz .favorite-filter-btn:hover {
+  background: #3d566e;
+  border-color: #555;
+}
+
+[data-theme="dark"] .ag-theme-quartz .favorite-filter-btn.active {
+  background: #d4af37;
+  border-color: #d4af37;
+}
+
+[data-theme="dark"] .ag-theme-quartz .favorite-filter-btn.active:hover {
+  background: #c19b26;
+  border-color: #c19b26;
+}
+
+[data-theme="dark"] .ag-theme-quartz .favorite-filter-btn .bookmark-svg {
+  color: #adb5bd;
+}
+
+[data-theme="dark"] .ag-theme-quartz .favorite-filter-btn:hover .bookmark-svg {
+  color: #d4af37;
+}
+
+[data-theme="dark"] .ag-theme-quartz .favorite-filter-btn.active .bookmark-svg {
+  color: #34495e;
+}
+
+[data-theme="dark"] .ag-theme-quartz .edit-btn,
+[data-theme="dark"] .ag-theme-quartz .delete-btn {
+  border: 1px solid #555;
+  background: #333;
+}
+
+[data-theme="dark"] .ag-theme-quartz .edit-btn .fas,
+[data-theme="dark"] .ag-theme-quartz .delete-btn .fas {
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="dark"] .ag-theme-quartz .edit-btn {
+  color: #4dabf7;
+  border-color: #4dabf7;
+}
+
+[data-theme="dark"] .ag-theme-quartz .edit-btn:hover {
+  background: rgba(77, 171, 247, 0.2);
+  color: #74c0fc;
+  border-color: #74c0fc;
+}
+
+[data-theme="dark"] .ag-theme-quartz .delete-btn {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+[data-theme="dark"] .ag-theme-quartz .delete-btn:hover {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff8787;
+  border-color: #ff8787;
+}
+
+[data-theme="dark"] .ag-theme-quartz .bookmark-svg {
+  color: #ccc;
+}
+
+[data-theme="dark"] .ag-theme-quartz .bookmark-svg.active {
+  color: #d4af37;
+}
+
+[data-theme="dark"] .ag-theme-quartz .fas {
+  color: #ccc;
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  display: inline-block !important;
+}
+
+/* Pagination */
+.ag-theme-quartz .ag-paging-panel {
+  background: #275076 !important;
+  color: #d4af37 !important;
+  border-top: 2px solid #d4af37;
+  padding: 12px;
+}
+
+.ag-theme-quartz .ag-paging-button {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0 2px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-quartz .ag-paging-button:hover:not(.ag-disabled),
+.ag-theme-quartz .ag-paging-button.ag-selected {
+  background: #d4af37 !important;
+  color: white !important;
+  border-color: #d4af37;
+}
+
+/* Custom Pagination Styles */
+.custom-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.pagination-info {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 5px;
+}
+
+.pagination-controls .btn {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 0.875rem;
+  min-width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-controls .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-controls .btn-primary {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+.pagination-controls .btn-outline-primary {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.pagination-controls .btn-outline-primary:hover:not(:disabled) {
+  background-color: var(--accent-primary);
+  color: white;
+}
+
+/* Dark theme pagination */
+:host-context([data-theme="dark"]) .custom-pagination {
+  background: var(--bg-secondary);
+  border-top-color: var(--border-color);
+}
+
+:host-context([data-theme="dark"]) .pagination-info {
+  color: var(--text-secondary);
+}
+
+/* Custom dark scrollbar for grid */
+.ag-theme-quartz {
+  scrollbar-width: thin;
+  scrollbar-color: #d4af37 #232323;
+}
+
+.ag-theme-quartz ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: #232323;
+  border-radius: 8px;
+}
+
+.ag-theme-quartz ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #d4af37 40%, #232323 100%);
+  border-radius: 8px;
+  min-height: 40px;
+  border: 2px solid #232323;
+}
+
+.ag-theme-quartz ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #f1c40f 40%, #d4af37 100%);
+}
+
+.ag-theme-quartz ::-webkit-scrollbar-corner {
+  background: #232323;
+}
+
+/* For Firefox */
+.ag-theme-quartz {
+  scrollbar-color: #d4af37 #232323;
+  scrollbar-width: thin;
+}

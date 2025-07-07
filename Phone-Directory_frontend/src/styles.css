@@ -1,3 +1,6 @@
+/* ag-Grid Styles */
+@import 'ag-grid-community/styles/ag-theme-quartz.css';
+
 /* CSS Variables for Theme Support */
 :root {
   /* Light Theme Colors */
@@ -15,29 +18,29 @@
   --card-bg: #ffffff;
   --header-bg: #34495e;
   --nav-text: #ecf0f1;
-  --button-hover-bg: rgba(212, 175, 55, 0.1);
+  --button-hover-bg: #e9ecef;
   --icon-filter: brightness(0.8);
   --success-color: #27ae60;
   --error-color: #e74c3c;
 }
 
 [data-theme="dark"] {
-  /* Dark Theme Colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-surface: #3d3d3d;
-  --text-primary: #ecf0f1;
-  --text-secondary: #bdc3c7;
-  --text-color: #ecf0f1;
-  --accent-primary: #f1c40f;
-  --accent-secondary: #d4ac0d;
-  --accent-color: #f1c40f;
-  --border-color: #555555;
+  /* Dark Theme Colors - Contact Grid ile uyumlu */
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #2a2a2a;
+  --bg-surface: #2a2a2a;
+  --text-primary: #f0f0f0;
+  --text-secondary: #cccccc;
+  --text-color: #f0f0f0;
+  --accent-primary: #d4af37;
+  --accent-secondary: #f1c40f;
+  --accent-color: #d4af37;
+  --border-color: #444;
   --shadow-color: rgba(0, 0, 0, 0.3);
-  --card-bg: #3d3d3d;
+  --card-bg: #242424;
   --header-bg: #2c3e50;
-  --nav-text: #ecf0f1;
-  --button-hover-bg: rgba(241, 196, 15, 0.1);
+  --nav-text: #f0f0f0;
+  --button-hover-bg: #333333;
   --icon-filter: brightness(1.2);
   --success-color: #2ecc71;
   --error-color: #e74c3c;
@@ -269,6 +272,30 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* ag-Grid Force Visibility Fixes */
+.ag-theme-quartz .ag-row {
+  height: 50px !important;
+  min-height: 50px !important;
+  line-height: 50px !important;
+  border-bottom: 1px solid #ddd !important;
+  background: white !important;
+}
+
+.ag-theme-quartz .ag-cell {
+  line-height: 50px !important;
+  padding: 0 8px !important;
+  border-right: 1px solid #ddd !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ag-theme-quartz .ag-header-cell {
+  height: 50px !important;
+  line-height: 50px !important;
+  background: #f8f9fa !important;
+  border-bottom: 2px solid #dee2e6 !important;
 }
 
 /* Responsive */

@@ -20,6 +20,13 @@ namespace PhoneDirectory.Data
         {
             base.OnModelCreating(builder);
             
+            // Kisi - ApplicationUser ilişkisi
+            builder.Entity<Kisi>()
+                .HasOne(k => k.User)
+                .WithMany(u => u.Kisiler)
+                .HasForeignKey(k => k.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Identity tabloları için özel konfigürasyonlar buraya eklenebilir
         }
     }

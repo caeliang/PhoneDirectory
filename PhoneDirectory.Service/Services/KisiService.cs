@@ -51,5 +51,34 @@ namespace PhoneDirectory.Service.Services
             return await _kisiRepository.GetPagedAndFilteredAsync(pageNumber, pageSize, searchTerm);
         }
 
+        // User-specific methods
+        public async Task<IEnumerable<Kisi>> GetByUserIdAsync(string userId)
+        {
+            return await _kisiRepository.GetByUserIdAsync(userId);
+        }
+
+        public async Task<Kisi?> GetByIdAndUserIdAsync(int id, string userId)
+        {
+            return await _kisiRepository.GetByIdAndUserIdAsync(id, userId);
+        }
+
+        public async Task<bool> DeleteByIdAndUserIdAsync(int id, string userId)
+        {
+            var kisi = await _kisiRepository.GetByIdAndUserIdAsync(id, userId);
+            if (kisi == null)
+                return false;
+
+            return await _kisiRepository.DeleteAsync(id);
+        }
+
+        public async Task<PagedResult<Kisi>> GetPagedAndFilteredByUserIdAsync(int pageNumber, int pageSize, string? searchTerm, string userId)
+        {
+            return await _kisiRepository.GetPagedAndFilteredByUserIdAsync(pageNumber, pageSize, searchTerm, userId);
+        }
+
+        public async Task<bool> PhoneNumberExistsAsync(string userId, string phoneNumber)
+        {
+            return await _kisiRepository.PhoneNumberExistsAsync(userId, phoneNumber);
+        }
     }
 }

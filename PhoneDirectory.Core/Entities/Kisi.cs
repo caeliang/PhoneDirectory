@@ -10,6 +10,9 @@ namespace PhoneDirectory.Core.Entities
         public int Id { get; set; }
 
         [Required]
+        public string UserId { get; set; } = null!; // Kullanıcıya ait kişi
+
+        [Required]
         public string Ad { get; set; } = null!;
 
         [Required]
@@ -27,5 +30,8 @@ namespace PhoneDirectory.Core.Entities
         public bool IsFavori { get; set; } = false; // önceki
         public DateTime CreatedAt { get; set; } = DateTime.Now; // yeni
         public DateTime UpdatedAt { get; set; } = DateTime.Now; // yeni
+
+        // Navigation property
+        public virtual ApplicationUser? User { get; set; }
     }
 }
