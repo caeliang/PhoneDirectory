@@ -103,6 +103,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles(); // wwwroot içindeki index.html gibi dosyaları varsayılan olarak sunar
+app.UseStaticFiles();  // wwwroot içeriğini statik olarak sunar
+
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapFallbackToFile("index.html"); // Angular routing için gerekli
+});
 // HTTP kullandığımız için HTTPS redirect'i kaldırıyoruz
 // app.UseHttpsRedirection();
 
