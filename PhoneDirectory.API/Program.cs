@@ -13,6 +13,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -96,6 +97,11 @@ builder.Services.AddCors(options =>
 });
     
 var app = builder.Build();
+app.UseRouting();
+
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
@@ -106,19 +112,15 @@ if (app.Environment.IsDevelopment())
 app.UseDefaultFiles(); // wwwroot içindeki index.html gibi dosyaları varsayılan olarak sunar
 app.UseStaticFiles();  // wwwroot içeriğini statik olarak sunar
 
-app.UseRouting();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapFallbackToFile("index.html"); // Angular routing için gerekli
-});
+app.MapControllers();
+app.MapFallbackToFile("index.html");
+
 // HTTP kullandığımız için HTTPS redirect'i kaldırıyoruz
 // app.UseHttpsRedirection();
 
-    app.UseCors("AllowAngularApp");
-    app.UseAuthentication();
-    app.UseAuthorization();
+app.UseCors("AllowAngularApp");
+
     app.MapControllers();
     
     app.Run();
