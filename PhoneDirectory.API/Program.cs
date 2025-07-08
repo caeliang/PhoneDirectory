@@ -97,8 +97,14 @@ builder.Services.AddCors(options =>
 });
     
 var app = builder.Build();
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5270";
-app.Urls.Add($"http://*:{port}");
+
+// Otomatik migration uygula (ücretsiz Render için)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PhoneDirectoryDbContext>();
+    db.Database.Migrate();
+}
+
 app.UseRouting();
 
 
