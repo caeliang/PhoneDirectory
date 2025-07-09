@@ -13,6 +13,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -97,18 +98,38 @@ builder.Services.AddCors(options =>
     
 var app = builder.Build();
 
+// Otomatik migration uygula (ücretsiz Render için)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PhoneDirectoryDbContext>();
+    db.Database.Migrate();
+}
+
+app.UseRouting();
+
+
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles(); // wwwroot içindeki index.html gibi dosyaları varsayılan olarak sunar
+app.UseStaticFiles();  // wwwroot içeriğini statik olarak sunar
+
+
+app.MapControllers();
+app.MapFallbackToFile("index.html");
+
 // HTTP kullandığımız için HTTPS redirect'i kaldırıyoruz
 // app.UseHttpsRedirection();
 
-    app.UseCors("AllowAngularApp");
-    app.UseAuthentication();
-    app.UseAuthorization();
+app.UseCors("AllowAngularApp");
+
     app.MapControllers();
     
     app.Run();

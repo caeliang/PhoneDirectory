@@ -17,7 +17,7 @@ export interface PagedResult<T> {
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:5270/api/Kisiler';
+  private apiUrl = 'https://phonedirectory-2.onrender.com/api/Kisiler';
 
   constructor(private http: HttpClient) { }
 
