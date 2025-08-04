@@ -110,6 +110,7 @@ if (app.Environment.IsDevelopment())
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
-    
+    app.MapGet("/", () => Results.Ok("Phone Directory API is running..."));
+
     app.Run();
 

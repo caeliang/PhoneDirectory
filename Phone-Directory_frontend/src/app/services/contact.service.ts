@@ -13,6 +13,7 @@ export interface PagedResult<T> {
   totalPages?: number;
 }
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -65,7 +66,7 @@ export class ContactService {
 
     return this.http.put<any>(`${this.apiUrl}/${id}`, apiContact).pipe(
       map(apiContact => {
-        // Backend boş yanıt döndürürse, güncellenmiş veriyi kendimiz oluştur
+        // Backend boş yanıt döndürse, güncellenmiş veriyi kendimiz oluştur
         if (!apiContact) {
           return ContactMapper.createLocalContact(id, updatedContact);
         }
