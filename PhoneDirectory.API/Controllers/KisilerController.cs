@@ -13,7 +13,7 @@ namespace PhoneDirectory.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Controller seviyesinde Authorization
+    [Authorize]
     public class KisilerController : ControllerBase
     {
         private readonly IKisiService _kisiService;

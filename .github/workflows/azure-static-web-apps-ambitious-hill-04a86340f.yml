@@ -1,0 +1,41 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - last-fine-version
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - last-fine-version
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    permissions:
+       id-token: write
+       contents: read
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js 20.19
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.19.0'
+
+      - name: Install dependencies & build Angular
+        run: |
+          cd Phone-Directory_frontend
+          npm ci
+          npm run build
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AMBITIOUS_HILL_04A86340F }}
+          action: "upload"
+          app_location: "Phone-Directory_frontend/dist/Phone-Directory_frontend"
+
+          
