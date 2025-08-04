@@ -13,6 +13,7 @@ export interface PagedResult<T> {
   totalPages?: number;
 }
 
+
 @Injectable({
   providedIn: 'root'
 })
