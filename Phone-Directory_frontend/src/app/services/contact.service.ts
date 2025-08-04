@@ -17,7 +17,7 @@ export interface PagedResult<T> {
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:5270/api/Kisiler';
+  private apiUrl = 'https://phonedirectoryapi-c6eadmbehtbtbeh5.canadacentral-01.azurewebsites.net/api/Kisiler';
 
   constructor(private http: HttpClient) { }
 
@@ -65,7 +65,7 @@ export class ContactService {
 
     return this.http.put<any>(`${this.apiUrl}/${id}`, apiContact).pipe(
       map(apiContact => {
-        // Backend boş yanıt döndürürse, güncellenmiş veriyi kendimiz oluştur
+        // Backend boş yanıt döndürse, güncellenmiş veriyi kendimiz oluştur
         if (!apiContact) {
           return ContactMapper.createLocalContact(id, updatedContact);
         }
