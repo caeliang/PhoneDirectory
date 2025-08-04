@@ -61,5 +61,5 @@ jobs:
         with:
           app-name: 'PhoneDirectory'
           slot-name: 'Production'
-          package: .
+          package: ./Phone-Directory_frontend/dist/Phone-Directory_frontend
           
