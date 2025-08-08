@@ -87,7 +87,10 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:4200")
+                .WithOrigins(
+                    "http://localhost:4200",
+                    "https://phonedirectoryapi-c6eadmbehtbtbeh5.uaenorth-01.azurewebsites.net/" // Azure'da deploy edilecek Angular uygulaması
+                )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .SetIsOriginAllowed(origin => true) // Development için
