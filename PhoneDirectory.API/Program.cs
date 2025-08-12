@@ -89,11 +89,10 @@ builder.Services.AddCors(options =>
             policy
                 .WithOrigins(
                     "http://localhost:4200",
-                    "https://phonedirectoryapi-c6eadmbehtbtbeh5.uaenorth-01.azurewebsites.net/" // Azure'da deploy edilecek Angular uygulaması
+                    "https://phonedirectoryangular-chfgfeamgycrg4du.uaenorth-01.azurewebsites.net" // Angular uygulamasının doğru URL'si
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .SetIsOriginAllowed(origin => true) // Development için
                 .AllowCredentials();
         });
 });

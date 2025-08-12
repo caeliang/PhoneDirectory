@@ -22,7 +22,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/web.config",
+              "src/assets",
+              "src/staticwebapp.config.json"
             ],
             "styles": [
               "src/styles.css"
