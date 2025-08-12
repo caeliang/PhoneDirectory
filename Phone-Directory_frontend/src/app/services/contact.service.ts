@@ -18,7 +18,7 @@ export interface PagedResult<T> {
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:5270/api/Kisiler';
+  private apiUrl = 'https://phonedirectoryapi-c6eadmbehtbtbeh5.uaenorth-01.azurewebsites.net/api/Kisiler';
 
   constructor(private http: HttpClient) { }
 
