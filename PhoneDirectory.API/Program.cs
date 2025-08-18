@@ -23,7 +23,15 @@ builder.Services.AddControllers()
 
 // Veritabanı bağlantı dizesi
 builder.Services.AddDbContext<PhoneDirectoryDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), 
+        sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorNumbersToAdd: null);
+            sqlOptions.CommandTimeout(60);
+        }));
 
 // Identity Configuration
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -76,6 +84,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IKisiRepository, KisiRepository>();
 builder.Services.AddScoped<IKisiService, KisiService>();
 builder.Services.AddScoped<IAuthService, IdentityAuthService>(); // Identity Auth Service
+builder.Services.AddScoped<IEmailService, EmailService>(); // Email Service
 builder.Services.AddSingleton<ILoggingService, FileLoggingService>(); // File Logging Service
 
 // Swagger
@@ -86,18 +95,62 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularApp",
         policy =>
         {
-            policy
-                .WithOrigins(
-                    "http://localhost:4200",
-                    "https://phonedirectoryangular-chfgfeamgycrg4du.uaenorth-01.azurewebsites.net" // Angular uygulamasının doğru URL'si
-                )
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
+            // FrontendUrl yapılandırmasını kullan
+            var frontendUrl = builder.Configuration["FrontendUrl"];
+            if (!string.IsNullOrEmpty(frontendUrl))
+            {
+                policy
+                    .WithOrigins(
+                        "http://localhost:4200",
+                        "https://phonedirectoryangular-chfgfeamgycrg4du.uaenorth-01.azurewebsites.net", // Angular uygulamasının doğru URL'si
+                        frontendUrl // Yapılandırmadaki URL'yi de ekle
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            }
+            else
+            {
+                policy
+                    .WithOrigins(
+                        "http://localhost:4200",
+                        "https://phonedirectoryangular-chfgfeamgycrg4du.uaenorth-01.azurewebsites.net" // Angular uygulamasının doğru URL'si
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            }
         });
 });
     
 var app = builder.Build();
+
+// Veritabanını oluştur ve migration'ları uygula
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<PhoneDirectoryDbContext>();
+    try
+    {
+        // Azure SQL için migration kullan
+        context.Database.Migrate();
+        Console.WriteLine("Database migrations applied successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database migration error: {ex.Message}");
+        // Azure SQL connection issues için retry
+        try
+        {
+            await Task.Delay(5000); // 5 saniye bekle
+            context.Database.Migrate();
+            Console.WriteLine("Database migrations applied on retry.");
+        }
+        catch (Exception retryEx)
+        {
+            Console.WriteLine($"Migration retry failed: {retryEx.Message}");
+        }
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

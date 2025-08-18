@@ -33,11 +33,31 @@ export interface RegisterRequest {
   lastName?: string;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  token: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+export interface VerifyEmailRequest {
+  email: string;
+  token: string;
+}
+
+export interface ResendEmailVerificationRequest {
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://phonedirectoryapi-c6eadmbehtbtbeh5.uaenorth-01.azurewebsites.net/api/auth';
+  private apiUrl = 'http://localhost:5270/api/auth';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
 
@@ -51,7 +71,6 @@ export class AuthService {
   };
 
   constructor(private http: HttpClient) {
-    // Sayfa yüklendiğinde token kontrolü yap
     this.checkToken();
   }
 
@@ -68,7 +87,6 @@ export class AuthService {
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData, this.httpOptions);
-    // Kayıt işleminde otomatik giriş yapmıyoruz
   }
 
   logout(): Observable<AuthResponse> {
@@ -84,6 +102,22 @@ export class AuthService {
     return this.http.get<User>(`${this.apiUrl}/me`);
   }
 
+  forgotPassword(request: ForgotPasswordRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/forgot-password`, request, this.httpOptions);
+  }
+
+  resetPassword(request: ResetPasswordRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/reset-password`, request, this.httpOptions);
+  }
+
+  verifyEmail(request: VerifyEmailRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/verify-email`, request, this.httpOptions);
+  }
+
+  resendEmailVerification(request: ResendEmailVerificationRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/resend-email-verification`, request, this.httpOptions);
+  }
+
   private setAuthData(token: string, user: User): void {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -91,7 +125,6 @@ export class AuthService {
     this.isLoggedInSubject.next(true);
   }
 
-  // Public method for immediate logout (security purposes)
   public clearAuthData(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

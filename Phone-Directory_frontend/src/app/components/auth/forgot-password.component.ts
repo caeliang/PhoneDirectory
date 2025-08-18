@@ -2,64 +2,38 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService, LoginRequest } from '../../services/auth.service';
+import { AuthService, ForgotPasswordRequest } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-forgot-password',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
     <div class="auth-container">
       <div class="auth-card">
         <div class="auth-header">
-          <h2>Giriş Yap</h2>
-          <p>Hesabınıza giriş yapın</p>
+          <h2>Şifremi Unuttum</h2>
+          <p>Email adresinizi girin, şifre sıfırlama bağlantısı gönderelim</p>
         </div>
         
-        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
+        <form (ngSubmit)="onSubmit()" #forgotPasswordForm="ngForm" class="auth-form" *ngIf="!submitted">
           <div class="form-group">
-            <label for="username">Kullanıcı Adı</label>
+            <label for="email">Email</label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              [(ngModel)]="credentials.username"
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="forgotPasswordData.email"
               required
+              email
               class="form-control"
-              [class.error]="loginForm.submitted && !credentials.username"
+              [class.error]="forgotPasswordForm.submitted && (!forgotPasswordData.email || !isValidEmail(forgotPasswordData.email))"
             />
-            <div class="error-message" *ngIf="loginForm.submitted && !credentials.username">
-              Kullanıcı adı zorunludur
+            <div class="error-message" *ngIf="forgotPasswordForm.submitted && !forgotPasswordData.email">
+              Email zorunludur
             </div>
-          </div>
-
-          <div class="form-group">
-            <label for="password">Şifre</label>
-            <div class="password-input-container">
-              <input
-                [type]="showPassword ? 'text' : 'password'"
-                id="password"
-                name="password"
-                [(ngModel)]="credentials.password"
-                required
-                minlength="6"
-                class="form-control"
-                [class.error]="loginForm.submitted && (!credentials.password || credentials.password.length < 6)"
-              />
-              <button
-                type="button"
-                class="password-toggle-btn"
-                (click)="togglePasswordVisibility()"
-                [attr.aria-label]="showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'"
-              >
-                <span class="password-toggle-icon">{{ showPassword ? '🙈' : '👁️' }}</span>
-              </button>
-            </div>
-            <div class="error-message" *ngIf="loginForm.submitted && !credentials.password">
-              Şifre zorunludur
-            </div>
-            <div class="error-message" *ngIf="loginForm.submitted && credentials.password && credentials.password.length < 6">
-              Şifre en az 6 karakter olmalıdır
+            <div class="error-message" *ngIf="forgotPasswordForm.submitted && forgotPasswordData.email && !isValidEmail(forgotPasswordData.email)">
+              Geçerli bir email adresi giriniz
             </div>
           </div>
 
@@ -72,14 +46,28 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
             class="btn btn-primary"
             [disabled]="isLoading"
           >
-            <span *ngIf="isLoading">Giriş yapılıyor...</span>
-            <span *ngIf="!isLoading">Giriş Yap</span>
+            <span *ngIf="isLoading">Gönderiliyor...</span>
+            <span *ngIf="!isLoading">Şifre Sıfırlama Bağlantısı Gönder</span>
           </button>
         </form>
 
+        <div class="success-container" *ngIf="submitted">
+          <div class="success-icon">✉️</div>
+          <h3>Email Gönderildi!</h3>
+          <p>
+            Eğer <strong>{{ forgotPasswordData.email }}</strong> adresi kayıtlı ise, 
+            şifre sıfırlama bağlantısı içeren bir email gönderildi.
+          </p>
+          <p class="info-text">
+            Email gelmedi mi? Spam klasörünü kontrol edin veya birkaç dakika bekleyin.
+          </p>
+        </div>
+
         <div class="auth-footer">
-          <p>Hesabınız yok mu? <a (click)="goToRegister()" class="link">Kayıt ol</a></p>
-          <p><a (click)="goToForgotPassword()" class="link">Şifremi unuttum</a></p>
+          <p><a (click)="goToLogin()" class="link">Giriş sayfasına dön</a></p>
+          <p *ngIf="submitted">
+            <a (click)="tryAgain()" class="link">Tekrar dene</a>
+          </p>
         </div>
       </div>
     </div>
@@ -119,6 +107,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
     .auth-header p {
       color: var(--text-secondary);
       margin: 0;
+      font-size: 0.9rem;
     }
 
     .auth-form {
@@ -190,6 +179,33 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       cursor: not-allowed;
     }
 
+    .success-container {
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .success-container h3 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+
+    .success-container p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .info-text {
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+    }
+
     .auth-footer {
       text-align: center;
       margin-top: 2rem;
@@ -199,7 +215,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
 
     .auth-footer p {
       color: var(--text-secondary);
-      margin: 0;
+      margin: 0.5rem 0;
     }
 
     .link {
@@ -212,89 +228,58 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
     .link:hover {
       text-decoration: underline;
     }
-
-    .password-input-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-toggle-btn {
-      position: absolute;
-      right: 12px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-    }
-
-    .password-toggle-btn:hover {
-      background-color: var(--border-color);
-    }
-
-    .password-toggle-icon {
-      font-size: 16px;
-      user-select: none;
-    }
-
-    .password-input-container .form-control {
-      padding-right: 40px;
-    }
   `]
 })
-export class LoginComponent {
-  credentials: LoginRequest = {
-    username: '',
-    password: ''
+export class ForgotPasswordComponent {
+  forgotPasswordData: ForgotPasswordRequest = {
+    email: ''
   };
   
   isLoading = false;
   errorMessage = '';
-  showPassword = false;
+  submitted = false;
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
-  togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
-  }
-
   onSubmit(): void {
-    if (!this.credentials.username || !this.credentials.password || this.credentials.password.length < 6) {
+    if (!this.forgotPasswordData.email || !this.isValidEmail(this.forgotPasswordData.email)) {
       return;
     }
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.credentials).subscribe({
+    this.authService.forgotPassword(this.forgotPasswordData).subscribe({
       next: (response) => {
         this.isLoading = false;
         if (response.success) {
-          this.router.navigate(['/contacts']);
+          this.submitted = true;
         } else {
           this.errorMessage = response.message;
         }
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Giriş yapılırken bir hata oluştu';
+        this.errorMessage = error.error?.message || 'Bir hata oluştu';
       }
     });
   }
 
-  goToRegister(): void {
-    this.router.navigate(['/register']);
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 
-  goToForgotPassword(): void {
-    this.router.navigate(['/forgot-password']);
+  goToLogin(): void {
+    this.router.navigate(['/login']);
+  }
+
+  tryAgain(): void {
+    this.submitted = false;
+    this.forgotPasswordData.email = '';
+    this.errorMessage = '';
   }
 }

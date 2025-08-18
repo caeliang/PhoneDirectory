@@ -79,16 +79,26 @@ import { AuthService, RegisterRequest } from '../../services/auth.service';
 
           <div class="form-group">
             <label for="password">Şifre *</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              [(ngModel)]="userData.password"
-              required
-              minlength="6"
-              class="form-control"
-              [class.error]="registerForm.submitted && (!userData.password || userData.password.length < 6)"
-            />
+            <div class="password-input-container">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                name="password"
+                [(ngModel)]="userData.password"
+                required
+                minlength="6"
+                class="form-control"
+                [class.error]="registerForm.submitted && (!userData.password || userData.password.length < 6)"
+              />
+              <button
+                type="button"
+                class="password-toggle-btn"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'"
+              >
+                <span class="password-toggle-icon">{{ showPassword ? '🙈' : '👁️' }}</span>
+              </button>
+            </div>
             <div class="error-message" *ngIf="registerForm.submitted && !userData.password">
               Şifre zorunludur
             </div>
@@ -99,15 +109,25 @@ import { AuthService, RegisterRequest } from '../../services/auth.service';
 
           <div class="form-group">
             <label for="confirmPassword">Şifre Tekrar *</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              [(ngModel)]="userData.confirmPassword"
-              required
-              class="form-control"
-              [class.error]="registerForm.submitted && (!userData.confirmPassword || userData.password !== userData.confirmPassword)"
-            />
+            <div class="password-input-container">
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                id="confirmPassword"
+                name="confirmPassword"
+                [(ngModel)]="userData.confirmPassword"
+                required
+                class="form-control"
+                [class.error]="registerForm.submitted && (!userData.confirmPassword || userData.password !== userData.confirmPassword)"
+              />
+              <button
+                type="button"
+                class="password-toggle-btn"
+                (click)="toggleConfirmPasswordVisibility()"
+                [attr.aria-label]="showConfirmPassword ? 'Şifreyi gizle' : 'Şifreyi göster'"
+              >
+                <span class="password-toggle-icon">{{ showConfirmPassword ? '🙈' : '👁️' }}</span>
+              </button>
+            </div>
             <div class="error-message" *ngIf="registerForm.submitted && !userData.confirmPassword">
               Şifre tekrarı zorunludur
             </div>
@@ -137,7 +157,10 @@ import { AuthService, RegisterRequest } from '../../services/auth.service';
 
         <div class="auth-footer">
           <p *ngIf="!successMessage">Zaten hesabınız var mı? <a (click)="goToLogin()" class="link">Giriş yap</a></p>
-          <p *ngIf="successMessage"><a (click)="goToLogin()" class="link">Giriş sayfasına git</a></p>
+          <p *ngIf="successMessage">
+            Email doğrulama için emailinizi kontrol edin. 
+            <a (click)="goToLogin()" class="link">Giriş sayfasına git</a>
+          </p>
         </div>
       </div>
     </div>
@@ -287,6 +310,39 @@ import { AuthService, RegisterRequest } from '../../services/auth.service';
     .link:hover {
       text-decoration: underline;
     }
+
+    .password-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .password-toggle-btn:hover {
+      background-color: var(--border-color);
+    }
+
+    .password-toggle-icon {
+      font-size: 16px;
+      user-select: none;
+    }
+
+    .password-input-container .form-control {
+      padding-right: 40px;
+    }
   `]
 })
 export class RegisterComponent {
@@ -302,11 +358,21 @@ export class RegisterComponent {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 
   onSubmit(): void {
     if (!this.isFormValid()) {
@@ -324,8 +390,8 @@ export class RegisterComponent {
         console.log('Başarılı yanıt:', response);
         this.isLoading = false;
         if (response.success) {
-          // Kayıt başarılı mesajı göster
-          this.successMessage = 'Kayıt başarılı! Artık giriş yapabilirsiniz.';
+          // Backend'den gelen mesajı göster (email doğrulama bilgisi içeriyor)
+          this.successMessage = response.message;
           this.errorMessage = '';
         } else {
           this.errorMessage = response.message;

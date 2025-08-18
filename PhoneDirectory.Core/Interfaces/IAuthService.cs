@@ -15,5 +15,14 @@ namespace PhoneDirectory.Core.Interfaces
         Task<ApplicationUser?> GetUserByIdAsync(string userId);
         Task<ApplicationUser?> GetUserByUsernameAsync(string username);
         Task<ApplicationUser?> GetUserByEmailAsync(string email);
+        
+        // Email verification methods
+        Task<(bool success, string token)> GenerateEmailVerificationTokenAsync(string email);
+        Task<bool> VerifyEmailAsync(string email, string token);
+        Task<bool> ResendEmailVerificationAsync(string email);
+        
+        // Password reset methods
+        Task<(bool success, string token)> GeneratePasswordResetTokenAsync(string email);
+        Task<bool> ResetPasswordAsync(string email, string token, string newPassword);
     }
 }
