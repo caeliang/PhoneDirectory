@@ -70,8 +70,8 @@ namespace PhoneDirectory.API.Controllers
 
                 await _logger.LogInfoAsync($"User registered successfully: {user.UserName} (ID: {user.Id})");
                 
-                // Send email verification
-                await _authService.GenerateEmailVerificationTokenAsync(registerDto.Email);
+                // Email verification token kayıt sırasında RegisterAsync içinde otomatik olarak gönderiliyor,
+                // burada tekrar göndermek iki token oluşmasına ve ilk doğrulama linkinin çalışmamasına neden oluyor
                 
                 // Development ve Production için farklı mesajlar
                 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

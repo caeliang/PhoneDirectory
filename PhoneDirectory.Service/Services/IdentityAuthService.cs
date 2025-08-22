@@ -48,26 +48,28 @@ namespace PhoneDirectory.Service.Services
                 
                 if (result.Succeeded)
                 {
-                    // Kullanıcı oluşturma başarılı olduğunda doğrulama e-postası göndermeyi dene
+                    // Kullanıcı oluşturma başarılı olduğunda doğrulama e-postası gönder
                     try
                     {
-                        // Generate verification token işlemi RegisterAsync'in dışında yapılıyor
-                        // Kontrolü burada yaparak e-posta gönderildiğinden emin olalım
+                        // Burada doğrudan email doğrulama token'ı oluştur ve gönder
+                        // Controller'dan ikinci kez çağrılmasını önlemek için
                         var (verificationSuccess, _) = await GenerateEmailVerificationTokenAsync(email);
                         
                         if (!verificationSuccess)
                         {
-                            // Email doğrulama token'ı oluşturulamadı veya gönderilemedi
-                            // Bu durumda kullanıcı hesabı oluşturuldu ama email doğrulama yapılamayacak
-                            // Log ekleme veya kullanıcıyı bilgilendirme işlemi yapılabilir
+                            // Email doğrulama token'ı oluşturulamadı veya gönderilemedi - loglama yap
+                            Console.WriteLine($"HATA: Email doğrulama token'ı gönderilemedi: {email}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Email doğrulama token'ı gönderildi: {email}");
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         // Email doğrulama hatası oluştu, ancak kullanıcı kaydı başarılı olduğu için
                         // bu hatayı yutarak işleme devam ediyoruz
-                        // İlerleyen aşamalarda kullanıcı "ResendEmailVerification" endpointi ile
-                        // yeniden doğrulama emaili talep edebilir
+                        Console.WriteLine($"Email doğrulama hatası: {ex.Message}");
                     }
                     
                     return (user, Array.Empty<string>());
@@ -266,12 +268,28 @@ namespace PhoneDirectory.Service.Services
             {
                 var user = await _userManager.FindByEmailAsync(email);
                 if (user == null)
+                {
+                    Console.WriteLine($"Email doğrulama hatası: Kullanıcı bulunamadı - {email}");
                     return false;
+                }
 
+                // Kullanıcının email'i zaten doğrulanmışsa başarılı dön
+                if (user.IsEmailVerified && user.EmailConfirmed)
+                {
+                    Console.WriteLine($"Email zaten doğrulanmış: {email}");
+                    return true;
+                }
+
+                // Token kontrolü
                 if (user.EmailVerificationToken != token || 
                     user.EmailVerificationTokenExpires == null ||
                     user.EmailVerificationTokenExpires < DateTime.UtcNow)
+                {
+                    Console.WriteLine($"Email doğrulama hatası: Geçersiz veya süresi dolmuş token - {email}");
+                    Console.WriteLine($"Beklenen token: {user.EmailVerificationToken}, Gelen token: {token}");
+                    Console.WriteLine($"Token süresi: {user.EmailVerificationTokenExpires}, Şu an: {DateTime.UtcNow}");
                     return false;
+                }
 
                 // Email doğrulandı - hesabı aktifleştir
                 user.IsEmailVerified = true;
@@ -282,10 +300,24 @@ namespace PhoneDirectory.Service.Services
                 user.UpdatedAt = DateTime.UtcNow;
 
                 var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    Console.WriteLine($"Email doğrulama başarılı: {email}");
+                }
+                else
+                {
+                    Console.WriteLine($"Email doğrulama hatası: Kullanıcı güncellenemedi - {email}");
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine($"- {error.Description}");
+                    }
+                }
+                
                 return result.Succeeded;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Email doğrulama işlemi sırasında hata: {ex.Message}");
                 return false;
             }
         }
@@ -294,11 +326,22 @@ namespace PhoneDirectory.Service.Services
         {
             try
             {
+                // Önce kullanıcıyı kontrol et
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                    return false;
+
+                // Kullanıcının email'i zaten doğrulanmışsa yeni token göndermeye gerek yok
+                if (user.IsEmailVerified && user.EmailConfirmed)
+                    return true;
+
+                // Yeni doğrulama token'ı oluştur ve gönder
                 var (success, token) = await GenerateEmailVerificationTokenAsync(email);
                 return success;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Email doğrulama token'ı yeniden gönderme hatası: {ex.Message}");
                 return false;
             }
         }
